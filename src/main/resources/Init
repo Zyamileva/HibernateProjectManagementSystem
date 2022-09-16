@@ -1,0 +1,102 @@
+INSERT INTO public.developers (first_name, last_name, email, phone_number) VALUES ('Lena', 'Zyamileva', 'zyamileval@ukr.net', 067-339-22-88);
+INSERT INTO public.developers (first_name, last_name, email, phone_number) VALUES ('Lera', 'Ivanova', 'ivanoval@ukr.net', 067-373-33-88);
+INSERT INTO public.developers (first_name, last_name, email, phone_number) VALUES ('Dima', 'Petrov','petrovd@ukr.net', 067-333-22-88);
+INSERT INTO public.developers (first_name, last_name, email, phone_number) VALUES ('Vany', 'Smirnov', 'smirnovv@ukr.net', 067-453-22-88);
+INSERT INTO public.developers (first_name, last_name, email, phone_number) VALUES ('Nata', 'Kipilova', 'kipilovan@ukr.net', 067-893-22-88);
+INSERT INTO public.developers (first_name, last_name, email, phone_number) VALUES ('Sergey', 'Ivanov', 'ivanovs@ukr.net', 067-353-22-88);
+
+INSERT INTO public.skills (name, level) VALUES ('Java', 'Junior');
+INSERT INTO public.skills (name, level) VALUES ('Java', 'Middle');
+INSERT INTO public.skills (name, level) VALUES ('Java', 'Senior');
+INSERT INTO public.skills (name, level) VALUES ('C++', 'Junior');
+INSERT INTO public.skills (name, level) VALUES ('C++', 'Middle');
+INSERT INTO public.skills (name, level) VALUES ('C++', 'Senior');
+INSERT INTO public.skills (name, level) VALUES ('C#', 'Junior');
+INSERT INTO public.skills (name, level) VALUES ('C#', 'Middle');
+INSERT INTO public.skills (name, level) VALUES ('C#', 'Senior');
+INSERT INTO public.skills (name, level) VALUES ('JS', 'Junior');
+INSERT INTO public.skills (name, level) VALUES ('JS', 'Middle');
+INSERT INTO public.skills (name, level) VALUES ('JS', 'Senior');
+
+INSERT INTO public.companies (name, staff) VALUES ('Vega', 10);
+INSERT INTO public.companies (name, staff) VALUES ('Stikon', 20);
+INSERT INTO public.companies (name, staff) VALUES ('DevTel', 15);
+
+INSERT INTO public.customers (name, contact_person, phone) VALUES ('DivSvet', 'Ivanov Ivan', '067-955-97-92');
+INSERT INTO public.customers (name, contact_person, phone) VALUES ('SantechDom', 'Sidorov Petor', '067-955-87-92');
+INSERT INTO public.customers (name, contact_person, phone) VALUES ('TEnet', 'Dimidova Lena', '093-756-77-92');
+
+
+INSERT INTO public.projects (name, task_difficulty, company_id, customer_id) VALUES ('Project_1', 'easy', '1', '1');
+INSERT INTO public.projects (name, task_difficulty, company_id, customer_id) VALUES ('Project_2', 'difficult', '2', '1');
+INSERT INTO public.projects (name, task_difficulty, company_id, customer_id) VALUES ('Project_3', 'easy', '3', '2');
+INSERT INTO public.projects (name, task_difficulty, company_id, customer_id) VALUES ('Project_4', 'difficult', '1', '2');
+INSERT INTO public.projects (name, task_difficulty, company_id, customer_id) VALUES ('Project_5', 'easy', '2', '3');
+
+INSERT INTO public.developers_skills (developer_id, skill_id) VALUES ('1', '3');
+INSERT INTO public.developers_skills (developer_id, skill_id) VALUES ('1', '5');
+INSERT INTO public.developers_skills (developer_id, skill_id) VALUES ('1', '7');
+INSERT INTO public.developers_skills (developer_id, skill_id) VALUES ('2', '2');
+INSERT INTO public.developers_skills (developer_id, skill_id) VALUES ('2', '12');
+INSERT INTO public.developers_skills (developer_id, skill_id) VALUES ('3', '1');
+INSERT INTO public.developers_skills (developer_id, skill_id) VALUES ('4', '2');
+INSERT INTO public.developers_skills (developer_id, skill_id) VALUES ('4', '7');
+INSERT INTO public.developers_skills (developer_id, skill_id) VALUES ('5', '5');
+INSERT INTO public.developers_skills (developer_id, skill_id) VALUES ('5', '9');
+INSERT INTO public.developers_skills (developer_id, skill_id) VALUES ('6', '3');
+INSERT INTO public.developers_skills (developer_id, skill_id) VALUES ('6', '11');
+
+INSERT INTO public.developers_projects (developer_id, project_id) VALUES ('1', '1');
+INSERT INTO public.developers_projects (developer_id, project_id) VALUES ('1', '2');
+INSERT INTO public.developers_projects (developer_id, project_id) VALUES ('2', '2');
+INSERT INTO public.developers_projects (developer_id, project_id) VALUES ('2', '4');
+INSERT INTO public.developers_projects (developer_id, project_id) VALUES ('3', '1');
+INSERT INTO public.developers_projects (developer_id, project_id) VALUES ('3', '5');
+INSERT INTO public.developers_projects (developer_id, project_id) VALUES ('4', '2');
+INSERT INTO public.developers_projects (developer_id, project_id) VALUES ('4', '3');
+INSERT INTO public.developers_projects (developer_id, project_id) VALUES ('5', '1');
+INSERT INTO public.developers_projects (developer_id, project_id) VALUES ('5', '4');
+INSERT INTO public.developers_projects (developer_id, project_id) VALUES ('6', '2');
+INSERT INTO public.developers_projects (developer_id, project_id) VALUES ('6', '5');
+INSERT INTO public.developers_projects (developer_id, project_id) VALUES ('6', '3');
+
+alter table developers
+add salary INT;
+
+update developers
+set salary=1000
+where developers.id=1;
+update developers
+set salary=2000
+where developers.id=2;
+update developers
+set salary=1200
+where developers.id=3;
+update developers
+set salary=3000
+where developers.id=4;
+update developers
+set salary=800
+where developers.id=5;
+update developers
+set salary=1900
+where developers.id=6;
+
+alter table projects
+add cost INT;
+
+update projects
+set cost=100000
+where projects.id=1;
+update projects
+set cost=200000
+where projects.id=2;
+update projects
+set cost=1200000
+where projects.id=3;
+update projects
+set cost=300000
+where projects.id=4;
+update projects
+set cost=800000
+where projects.id=5;

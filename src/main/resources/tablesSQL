@@ -1,0 +1,93 @@
+create table developers
+(
+	id SERIAL
+    constraint developers_pk PRIMARY KEY,
+    first_name VARCHAR(20) NOT NULL,
+	last_name VARCHAR(25) NOT NULL,
+	email VARCHAR(25) NOT NULL,
+	phone_number VARCHAR(20),
+	salary INT,
+  UNIQUE (email),
+  UNIQUE (phone_number)
+);
+
+alter table developers owner to postgres;
+
+create table skills
+(
+	id SERIAL
+    constraint skills_pk PRIMARY KEY,
+    name VARCHAR(20) NOT NULL,
+	level VARCHAR(25) NOT NULL,
+	UNIQUE(name,level)
+);
+
+alter table skills owner to postgres;
+
+create table companies
+(
+	id SERIAL
+    constraint companies_pk PRIMARY KEY,
+    name VARCHAR(20) NOT NULL,
+	staff INT,
+  UNIQUE (name)
+);
+
+alter table companies owner to postgres;
+
+create table customers
+(
+   id SERIAL
+   constraint customers_pk PRIMARY KEY,
+   name VARCHAR(20) NOT NULL,
+   contact_person VARCHAR(20) NOT NULL,
+   phone VARCHAR(20) NOT NULL,
+  UNIQUE (name)
+);
+
+alter table customers owner to postgres;
+
+create table projects
+(
+	id SERIAL
+    constraint projects_pk PRIMARY KEY,
+    name VARCHAR(20) NOT NULL,
+    task_difficulty VARCHAR(20),
+    company_id INT,
+    customer_id INT,
+    cost INT,
+  FOREIGN KEY (company_id)
+  REFERENCES companies,
+  FOREIGN KEY (customer_id)
+  REFERENCES customers,
+  UNIQUE (name)
+);
+
+alter table projects owner to postgres;
+
+
+create table developers_projects
+ (
+   developer_id int
+   constraint developers_projects_developer_id_fk
+   references developers,
+   project_id int
+   constraint developers_projects_project_id_fk
+   references projects
+ );
+
+alter table developers_projects owner to postgres;
+
+create table developers_skills
+ (
+   id SERIAL,
+   developer_id int
+   constraint developers_skills_developer_id_fk
+   references developers,
+   skill_id int
+   constraint developers_skills_skill_id_fk
+   references skills,
+   UNIQUE(developer_id,skill_id)
+ );
+
+alter table developers_skills owner to postgres;
