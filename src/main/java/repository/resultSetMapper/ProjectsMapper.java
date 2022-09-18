@@ -10,6 +10,7 @@ public class ProjectsMapper implements Mapper<ProjectsDao> {
     public ProjectsDao map(ResultSet resultSet) throws SQLException {
         ProjectsDao projectsDao = new ProjectsDao();
         projectsDao.setId(resultSet.getInt("id"));
+        projectsDao.setDatePosted(resultSet.getTimestamp("date_create").toLocalDateTime());
         projectsDao.setName(resultSet.getString("name"));
         projectsDao.setTask_difficulty(resultSet.getString("task_difficulty"));
         projectsDao.setCompanyId(resultSet.getInt("company_id"));

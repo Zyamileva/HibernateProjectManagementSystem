@@ -1,5 +1,6 @@
 package service;
 
+import model.dto.DevelopersDto;
 import model.dto.ProjectsDto;
 
 import java.util.List;
@@ -14,4 +15,10 @@ public interface ProjectsService {
     boolean existById(int id);
 
     void delete(ProjectsDto projectsDto);
+
+    int sallaryOfProjects(int id);
+
+    public List<DevelopersDto> ListDevelopersOfProjects(int id);
+
+    public int CountDevelopersOfProjects(int id);
 }

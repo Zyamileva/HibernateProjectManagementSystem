@@ -9,6 +9,7 @@ public class ProjectsConverter implements Converter<ProjectsDto, ProjectsDao> {
         ProjectsDto projectsDto = new ProjectsDto();
         projectsDto.setId(entity.getId());
         projectsDto.setName(entity.getName());
+        projectsDto.setDatePosted(entity.getDatePosted());
         projectsDto.setTask_difficulty(entity.getTask_difficulty());
         projectsDto.setCompanyId(entity.getCompanyId());
         projectsDto.setCustomerId(entity.getCustomerId());
@@ -20,6 +21,7 @@ public class ProjectsConverter implements Converter<ProjectsDto, ProjectsDao> {
     public ProjectsDao to(ProjectsDto entity) {
         ProjectsDao projectsDao = new ProjectsDao();
         projectsDao.setId(entity.getId());
+        projectsDao.setDatePosted(entity.getDatePosted());
         projectsDao.setName(entity.getName());
         projectsDao.setTask_difficulty(entity.getTask_difficulty());
         projectsDao.setCompanyId(entity.getCompanyId());

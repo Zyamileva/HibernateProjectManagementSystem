@@ -2,9 +2,7 @@ package model.dao;
 
 import model.PersistentEntity;
 
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 public class DevelopersDao extends PersistentEntity {
     private String firstName;

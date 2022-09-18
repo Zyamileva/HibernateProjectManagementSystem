@@ -13,8 +13,9 @@ public interface DeveloperService {
 
     List<DevelopersDto> findAll();
 
-    //boolean existById(int id);
+    List<DevelopersDto> listOfJavaDevelopers();
 
     void delete(DevelopersDto developers);
-}
 
+    public List<DevelopersDto> listOfMiddleDevelopers();
+}

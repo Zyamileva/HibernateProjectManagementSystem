@@ -29,7 +29,6 @@ public class Controller {
             boolean isInputCorrect = false;
             for (Command command : commands) {
                 if (command.canExecute(input)) {
-
                     command.execute();
                     isInputCorrect = true;
                 }

@@ -11,17 +11,16 @@ import java.util.List;
 import java.util.Optional;
 
 public class CompaniesRepository implements Repository<CompaniesDao> {
-    private final DataBaseManagerConnector manager;
+    private final Connection connection;
 
-    private static final String INSERT = "INSERT INTO companies(name, staff) VALUES(?,?)";
-
-    public CompaniesRepository(DataBaseManagerConnector manager) {
-        this.manager = manager;
+    public CompaniesRepository(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
     public CompaniesDao save(CompaniesDao entity) {
-        try (Connection connection = manager.getConnector();) {
+        final String INSERT = "INSERT INTO companies(name, staff) VALUES(?,?)";
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setInt(2, entity.getStaff());

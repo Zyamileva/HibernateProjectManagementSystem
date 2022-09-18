@@ -1,10 +1,7 @@
 import command.*;
 import config.DataBaseManagerConnector;
 import controller.Controller;
-import repository.DevelopersRepository;
-import repository.DevelopersSkillsRepository;
-import repository.ProjectsRepository;
-import repository.SkillsRepository;
+import repository.*;
 import service.*;
 import service.converter.DeveloperConverter;
 import service.converter.DevelopersSkillsConverter;
@@ -32,23 +29,28 @@ public class Main {
 
         DeveloperConverter developerConverter = new DeveloperConverter();
         DevelopersSkillsConverter developersSkillsConverter = new DevelopersSkillsConverter();
-        ProjectsConverter projectsConverter=new ProjectsConverter();
+        ProjectsConverter projectsConverter = new ProjectsConverter();
 
         DevelopersRepository developersRepository = new DevelopersRepository(connector);
-        SkillsRepository skillsRepository=new SkillsRepository(connector);
-        DevelopersSkillsRepository developersSkillsRepository=new DevelopersSkillsRepository(connector);
-        ProjectsRepository projectsRepository=new ProjectsRepository(connector);
+        SkillsRepository skillsRepository = new SkillsRepository(connector);
+        DevelopersSkillsRepository developersSkillsRepository = new DevelopersSkillsRepository(connector);
+        CompaniesRepository companiesRepository = new CompaniesRepository(connector);
+        ProjectsRepository projectsRepository = new ProjectsRepository(connector);
         DeveloperService developerService = new DeveloperServiceImpl(developersRepository, developerConverter);
-        SkillsServiceImpl skillsService=new SkillsServiceImpl(skillsRepository);
-        ProjectsServiceImpl projectsService = new ProjectsServiceImpl(projectsRepository,projectsConverter);
-        DevelopersSkillsService developersSkillsService =new DevelopersSkillsServiceImpl(developersSkillsRepository,
+        SkillsServiceImpl skillsService = new SkillsServiceImpl(skillsRepository);
+        ProjectsServiceImpl projectsService = new ProjectsServiceImpl(projectsRepository, developerConverter, projectsConverter);
+        DevelopersSkillsService developersSkillsService = new DevelopersSkillsServiceImpl(developersSkillsRepository,
                 developersSkillsConverter);
 
         List<Command> commands = new ArrayList<>();
         commands.add(new Help(view));
         commands.add(new Exit(view));
         commands.add(new AddDeveloper(view, developerService, skillsService, developersSkillsService));
-        commands.add(new SalleryOfProjects(view,projectsService));
+        commands.add(new SalleryOfProjects(view, projectsService));
+        commands.add(new ListDevelopersOfProjects(view, projectsService));
+        commands.add(new ListOfJavaDeveloper(view, developerService));
+        commands.add(new LestOfMiddleDevelopers(view, developerService));
+        commands.add(new ListOfProjects(view, projectsService));
 
         Controller controller = new Controller(view, commands);
 

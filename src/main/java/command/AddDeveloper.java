@@ -1,13 +1,10 @@
 package command;
 
-import exceptions.ExitException;
 import model.dto.DevelopersDto;
 import model.dto.DevelopersSkillsDto;
-import repository.SkillsRepository;
 import service.*;
 import view.View;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddDeveloper implements Command {

@@ -2,17 +2,22 @@ package model.dto;
 
 import model.PersistentEntity;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class ProjectsDto extends PersistentEntity {
     private String name;
+
+    private LocalDateTime datePosted;
     private String task_difficulty;
     private int customerId;
     private int companyId;
     private int cost;
 
-    public ProjectsDto(String name, String task_difficulty, int customerId, int companyId, int cost) {
+    public ProjectsDto(String name, LocalDateTime datePosted, String task_difficulty, int customerId,
+                       int companyId, int cost) {
         this.name = name;
+        this.datePosted = datePosted;
         this.task_difficulty = task_difficulty;
         this.customerId = customerId;
         this.companyId = companyId;
@@ -28,6 +33,14 @@ public class ProjectsDto extends PersistentEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public LocalDateTime getDatePosted() {
+        return datePosted;
+    }
+
+    public void setDatePosted(LocalDateTime datePosted) {
+        this.datePosted = datePosted;
     }
 
     public String getTask_difficulty() {
@@ -65,20 +78,22 @@ public class ProjectsDto extends PersistentEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ProjectsDto projectsDao)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        return customerId == projectsDao.customerId && companyId == projectsDao.companyId && cost == projectsDao.cost && name.equals(projectsDao.name) && task_difficulty.equals(projectsDao.task_difficulty);
+        ProjectsDto that = (ProjectsDto) o;
+        return customerId == that.customerId && companyId == that.companyId && cost == that.cost && name.equals(that.name) && datePosted.equals(that.datePosted) && task_difficulty.equals(that.task_difficulty);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, task_difficulty, customerId, companyId, cost);
+        return Objects.hash(super.hashCode(), name, datePosted, task_difficulty, customerId, companyId, cost);
     }
 
     @Override
     public String toString() {
-        return "Projects{" +
+        return "ProjectsDto{" +
                 "name='" + name + '\'' +
+                ", datePosted=" + datePosted +
                 ", task_difficulty='" + task_difficulty + '\'' +
                 ", customerId=" + customerId +
                 ", companyId=" + companyId +

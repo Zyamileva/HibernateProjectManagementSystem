@@ -6,7 +6,6 @@ create table developers
 	last_name VARCHAR(25) NOT NULL,
 	email VARCHAR(25) NOT NULL,
 	phone_number VARCHAR(20),
-	salary INT,
   UNIQUE (email),
   UNIQUE (phone_number)
 );
@@ -55,7 +54,6 @@ create table projects
     task_difficulty VARCHAR(20),
     company_id INT,
     customer_id INT,
-    cost INT,
   FOREIGN KEY (company_id)
   REFERENCES companies,
   FOREIGN KEY (customer_id)
@@ -91,3 +89,12 @@ create table developers_skills
  );
 
 alter table developers_skills owner to postgres;
+
+alter table developers
+add salary INT;
+
+alter table projects
+add cost INT;
+
+alter table projects
+add date_create timestamp;

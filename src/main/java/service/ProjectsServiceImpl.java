@@ -1,32 +1,37 @@
 package service;
 
-import model.dao.DevelopersSkillsDao;
+import model.dao.DevelopersDao;
 import model.dao.ProjectsDao;
-import model.dto.DevelopersSkillsDto;
+import model.dto.DevelopersDto;
 import model.dto.ProjectsDto;
 import repository.ProjectsRepository;
 import service.converter.Converter;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ProjectsServiceImpl implements ProjectsService {
     ProjectsRepository projectsRepository;
-    Converter<ProjectsDto, ProjectsDao> converter;
+    Converter<DevelopersDto, DevelopersDao> converterDeveloper;
+    Converter<ProjectsDto, ProjectsDao> converterProjects;
 
-    public ProjectsServiceImpl(ProjectsRepository projectsRepository, Converter<ProjectsDto, ProjectsDao> converter) {
+    public ProjectsServiceImpl(ProjectsRepository projectsRepository,
+                               Converter<DevelopersDto, DevelopersDao> converterDeveloper,
+                               Converter<ProjectsDto, ProjectsDao> converterProjects) {
         this.projectsRepository = projectsRepository;
-        this.converter = converter;
+        this.converterDeveloper = converterDeveloper;
+        this.converterProjects = converterProjects;
     }
 
     @Override
     public Optional<ProjectsDto> findById(int projectId) {
-        return projectsRepository.findById(projectId).map(element->converter.from(element));
+        return projectsRepository.findById(projectId).map(element -> converterProjects.from(element));
     }
 
     @Override
     public List<ProjectsDto> findAll() {
-        return null;
+        return projectsRepository.findAll().stream().map(element -> converterProjects.from(element)).collect(Collectors.toList());
     }
 
     @Override
@@ -36,10 +41,21 @@ public class ProjectsServiceImpl implements ProjectsService {
 
     @Override
     public void delete(ProjectsDto projectsDto) {
-
     }
 
+    @Override
     public int sallaryOfProjects(int id) {
         return projectsRepository.sallaryOfProjects(id);
+    }
+
+    @Override
+    public List<DevelopersDto> ListDevelopersOfProjects(int id) {
+        return projectsRepository.ListDevelopersOfProjects(id).stream().map(element -> converterDeveloper.from(element))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public int CountDevelopersOfProjects(int id) {
+        return projectsRepository.CountDevelopersOfProjects(id);
     }
 }

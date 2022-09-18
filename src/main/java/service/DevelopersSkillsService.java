@@ -1,6 +1,5 @@
 package service;
 
-import model.dto.DevelopersDto;
 import model.dto.DevelopersSkillsDto;
 
 import java.util.List;
@@ -18,4 +17,3 @@ public interface DevelopersSkillsService {
 
     void delete(DevelopersSkillsDto developersSkillsDto);
 }
-

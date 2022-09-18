@@ -1,8 +1,11 @@
 package command;
 
+import model.dto.DevelopersDto;
 import model.dto.ProjectsDto;
 import service.ProjectsServiceImpl;
 import view.View;
+
+import java.util.List;
 
 public class ListDevelopersOfProjects implements Command {
     public static final String LIST_DEVELOPERS_OF_PROJECTS = "query_2";
@@ -24,21 +27,9 @@ public class ListDevelopersOfProjects implements Command {
         view.write("Enter id of projects.");
         int id = Integer.parseInt(view.read());
         ProjectsDto projectsDto = projectsService.findById(id).get();
-        int salary = projectsService.sallaryOfProjects(id);
-        view.write("Project " + projectsDto.getName() + ": salary (sum) of all project developers = " + salary);
+        List<DevelopersDto> developers = projectsService.ListDevelopersOfProjects(id);
+        view.write("Project: " + projectsDto.getName());
+        view.write("Developers:");
+        developers.stream().forEach(System.out::println);
     }
 }
-
-
-
-
-
-
-//    select first_name as first_name, last_name as last_name, pr.name as name
-//        from projects as pr
-//        join developers_projects as dp on pr.id=dp.project_id
-//        join developers as d on dp.developer_id=d.id
-//        where pr.id=1
-//
-//        select first_name as first_name, last_name as last_name
-//        from developers

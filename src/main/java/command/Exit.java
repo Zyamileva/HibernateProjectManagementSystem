@@ -3,8 +3,6 @@ package command;
 import exceptions.ExitException;
 import view.View;
 
-import java.util.concurrent.ExecutionException;
-
 public class Exit implements Command {
     public static final String EXIT = "exit";
     private View view;

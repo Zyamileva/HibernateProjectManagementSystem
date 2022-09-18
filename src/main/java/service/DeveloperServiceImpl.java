@@ -3,19 +3,17 @@ package service;
 import model.dao.DevelopersDao;
 import model.dto.DevelopersDto;
 import repository.DevelopersRepository;
-import repository.Repository;
 import service.converter.Converter;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class DeveloperServiceImpl implements DeveloperService {
-    Repository<DevelopersDao> developersRepository;
+    DevelopersRepository developersRepository;
     Converter<DevelopersDto, DevelopersDao> converter;
 
-    public DeveloperServiceImpl(Repository<DevelopersDao> developersRepository, Converter<DevelopersDto, DevelopersDao> converter) {
+    public DeveloperServiceImpl(DevelopersRepository developersRepository, Converter<DevelopersDto, DevelopersDao> converter) {
         this.developersRepository = developersRepository;
         this.converter = converter;
     }
@@ -32,12 +30,24 @@ public class DeveloperServiceImpl implements DeveloperService {
 
     @Override
     public List<DevelopersDto> findAll() {
-        return developersRepository.findAll().stream().map((dao) -> converter.from(dao)).collect(Collectors.toList());
+        return developersRepository.findAll().stream().map((element) -> converter.from(element))
+                .collect(Collectors.toList());
     }
 
     @Override
     public void delete(DevelopersDto developers) {
         developersRepository.delete(converter.to(developers));
+    }
 
+    @Override
+    public List<DevelopersDto> listOfJavaDevelopers() {
+        return developersRepository.listOfJavaDevelopers().stream().map((element) -> converter.from(element))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DevelopersDto> listOfMiddleDevelopers() {
+        return developersRepository.listOfMiddleDevelopers().stream().map((element) -> converter.from(element))
+                .collect(Collectors.toList());
     }
 }

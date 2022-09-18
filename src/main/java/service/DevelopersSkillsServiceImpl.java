@@ -1,8 +1,6 @@
 package service;
 
-import model.dao.DevelopersDao;
 import model.dao.DevelopersSkillsDao;
-import model.dto.DevelopersDto;
 import model.dto.DevelopersSkillsDto;
 import repository.DevelopersSkillsRepository;
 import service.converter.Converter;

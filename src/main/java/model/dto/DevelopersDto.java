@@ -2,9 +2,7 @@ package model.dto;
 
 import model.PersistentEntity;
 
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 public class DevelopersDto extends PersistentEntity {
     private String firstName;

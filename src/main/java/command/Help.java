@@ -22,10 +22,9 @@ public class Help implements Command {
         view.write(String.format("Enter %s to add developer", AddDeveloper.ADD_DEVELOPER));
         view.write(String.format("Enter %s to get the salary (sum) of all project developers",
                 SalleryOfProjects.SALLERY_OF_PROJECTS));
-        //view.write(String.format("Enter %s command to add book to the library", AddBook.ADD_BOOK));
-        //view.write(String.format("Enter %s command to add journal to the library", "add journal"));
+        view.write(String.format("Enter %s to get List Developers of Project", ListDevelopersOfProjects.LIST_DEVELOPERS_OF_PROJECTS));
+        view.write(String.format("Enter %s to get List JAVA Developers", ListOfJavaDeveloper.LIST_OF_JAVA_DEVELOPERS));
+        view.write(String.format("Enter %s to get List MIDDLE Developers", LestOfMiddleDevelopers.LIST_OF_MIDDLE_DEVELOPERS));
+        view.write(String.format("Enter %s to get List of Projects", ListOfProjects.LIST_OF_PROJECTS));
     }
 }
-
-
-

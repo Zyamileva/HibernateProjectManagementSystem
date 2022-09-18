@@ -60,9 +60,6 @@ INSERT INTO public.developers_projects (developer_id, project_id) VALUES ('6', '
 INSERT INTO public.developers_projects (developer_id, project_id) VALUES ('6', '5');
 INSERT INTO public.developers_projects (developer_id, project_id) VALUES ('6', '3');
 
-alter table developers
-add salary INT;
-
 update developers
 set salary=1000
 where developers.id=1;
@@ -82,9 +79,6 @@ update developers
 set salary=1900
 where developers.id=6;
 
-alter table projects
-add cost INT;
-
 update projects
 set cost=100000
 where projects.id=1;
@@ -99,4 +93,20 @@ set cost=300000
 where projects.id=4;
 update projects
 set cost=800000
+where projects.id=5;
+
+update projects
+set date_create='2022-02-05 18:55:20'
+where projects.id=1;
+update projects
+set date_create='2022-06-15 18:55:20'
+where projects.id=2;
+update projects
+set date_create='2022-02-15 18:55:20'
+where projects.id=3;
+update projects
+set date_create='2022-02-11 18:55:20'
+where projects.id=4;
+update projects
+set date_create='2022-01-05 19:55:20'
 where projects.id=5;
