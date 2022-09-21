@@ -1,7 +1,6 @@
 package command;
 
 import model.dto.DevelopersDto;
-import model.dto.DevelopersSkillsDto;
 import service.*;
 import view.View;
 
@@ -11,14 +10,18 @@ public class AddDeveloper implements Command {
     public static final String ADD_DEVELOPER = "add_developer";
     private View view;
     private DeveloperService developerService;
-    private DevelopersSkillsService developersSkillsService;
     private SkillsServiceImpl skillsService;
 
-    public AddDeveloper(View view, DeveloperService developerService, SkillsServiceImpl skillsService, DevelopersSkillsService developersSkillsService) {
+    private List<String> nameSkills;
+    private List<String> levelSkills;
+
+    public AddDeveloper(View view, DeveloperService developerService, SkillsServiceImpl skillsService,
+                        List<String> nameSkills, List<String> levelSkills) {
         this.view = view;
         this.developerService = developerService;
         this.skillsService = skillsService;
-        this.developersSkillsService = developersSkillsService;
+        this.nameSkills = nameSkills;
+        this.levelSkills = levelSkills;
     }
 
     @Override
@@ -47,9 +50,6 @@ public class AddDeveloper implements Command {
             }
         }
 
-        List<String> nameSkills = List.of("Java", "C++", "C#", "JS");
-        List<String> levelSkills = List.of("Junior", "Middle", "Senior");
-
         DevelopersDto developersDto =
                 developerService.saveDeveloper(new DevelopersDto(first_name, last_name, email, phone_number, salary));
 
@@ -62,7 +62,7 @@ public class AddDeveloper implements Command {
                     String level = view.read();
                     if (levelSkills.stream().anyMatch(element -> element.equals(level))) {
                         int idNameLevel = skillsService.findByNameLevel(skill, level);
-                        developersSkillsService.saveDevelopersSkiils(new DevelopersSkillsDto(developersDto.getId(), idNameLevel));
+                        developerService.saveSkills(developersDto.getId(), idNameLevel);
                         break;
                     } else {
                         view.write("Error. Enter level of skills: Junior, Middle, Senior");

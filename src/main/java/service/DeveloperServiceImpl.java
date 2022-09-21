@@ -50,4 +50,9 @@ public class DeveloperServiceImpl implements DeveloperService {
         return developersRepository.listOfMiddleDevelopers().stream().map((element) -> converter.from(element))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void saveSkills(int idDeveloper, int idNameLevel) {
+        developersRepository.saveSkills(idDeveloper, idNameLevel);
+    }
 }

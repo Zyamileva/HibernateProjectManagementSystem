@@ -14,7 +14,5 @@ public interface SkillsService {
 
     List<SkillsDto> findAll();
 
-    boolean existByIds(int a, int j);
-
-    void delete(DevelopersDto developers);
+    void delete(SkillsDto skills);
 }

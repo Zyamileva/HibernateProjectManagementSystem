@@ -23,8 +23,8 @@ public class Help implements Command {
         view.write(String.format("Enter %s to get the salary (sum) of all project developers",
                 SalleryOfProjects.SALLERY_OF_PROJECTS));
         view.write(String.format("Enter %s to get List Developers of Project", ListDevelopersOfProjects.LIST_DEVELOPERS_OF_PROJECTS));
-        view.write(String.format("Enter %s to get List JAVA Developers", ListOfJavaDeveloper.LIST_OF_JAVA_DEVELOPERS));
-        view.write(String.format("Enter %s to get List MIDDLE Developers", LestOfMiddleDevelopers.LIST_OF_MIDDLE_DEVELOPERS));
+        view.write(String.format("Enter %s to get List Developers of the specified programming language", ListOfDeveloperSkillName.LIST_OF_SKILL_DEVELOPERS));
+        view.write(String.format("Enter %s to get List Developers of the specified level of knowledge", LestOfDevelopersSkillLevel.LIST_OF_SKILL_LEVEL_DEVELOPERS));
         view.write(String.format("Enter %s to get List of Projects", ListOfProjects.LIST_OF_PROJECTS));
     }
 }

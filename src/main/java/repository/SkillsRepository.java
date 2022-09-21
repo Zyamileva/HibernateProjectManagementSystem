@@ -1,16 +1,16 @@
 package repository;
 
 import model.dao.SkillsDao;
+import repository.resultSetMapper.SkillsMapper;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class SkillsRepository implements Repository<SkillsDao> {
     private final Connection connection;
+    private static final SkillsMapper skillsMapper = new SkillsMapper();
 
     public SkillsRepository(Connection connection) {
         this.connection = connection;
@@ -18,28 +18,96 @@ public class SkillsRepository implements Repository<SkillsDao> {
 
     @Override
     public SkillsDao save(SkillsDao entity) {
-        return null;
+        final String INSERT = "INSERT INTO skills(name, level)" +
+                " VALUES(?,?)";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, entity.getName());
+            preparedStatement.setString(2, entity.getLevel());
+            preparedStatement.executeUpdate();
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                entity.setId(generatedKeys.getInt(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return entity;
     }
 
     @Override
     public void delete(SkillsDao entity) {
-
+        final String query = """
+                delete from skills
+                where id = ?
+                """;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, entity.getId());
+            preparedStatement.execute();
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public Optional<SkillsDao> findById(int id) {
-        return null;
+        final String FIND_BY_ID = "SELECT * FROM skills WHERE id = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(skillsMapper.map(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.empty();
     }
 
     @Override
     public List<SkillsDao> findAll() {
-        return null;
+        final String query = """
+                select *
+                from skills
+                 """;
+        List<SkillsDao> skills = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                skills.add(skillsMapper.map(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return skills;
     }
 
     @Override
     public SkillsDao update(SkillsDao entity) {
-        return null;
+        final String query = """
+                update skills set
+                   name = ?,
+                   level = ?
+                   where id = ?
+                """;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, entity.getName());
+            preparedStatement.setString(2, entity.getLevel());
+            preparedStatement.setInt(3, entity.getId());
+            preparedStatement.execute();
+            connection.commit();
+            return entity;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
+
 
     public int findByNameLevel(String name, String level) {
         final String EXIST = "SELECT id FROM skills WHERE name = ? AND level = ? ";

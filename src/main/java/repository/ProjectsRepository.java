@@ -86,12 +86,43 @@ public class ProjectsRepository implements Repository<ProjectsDao> {
 
     @Override
     public ProjectsDao save(ProjectsDao entity) {
-        return null;
+        final String INSERT = "INSERT INTO projects(name, task_difficulty, " +
+                "company_id, customer_id, cost, date_create)" +
+                " VALUES(?,?,?,?,?,?)";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, entity.getName());
+            preparedStatement.setString(2, entity.getTask_difficulty());
+            preparedStatement.setInt(3, entity.getCompanyId());
+            preparedStatement.setInt(4, entity.getCustomerId());
+            preparedStatement.setInt(5, entity.getCost());
+            preparedStatement.setTimestamp(6, Timestamp.valueOf(entity.getDatePosted()));
+            preparedStatement.executeUpdate();
+
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                entity.setId(generatedKeys.getInt(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return entity;
     }
 
     @Override
     public void delete(ProjectsDao entity) {
-
+        final String query = """
+                delete from projects
+                where id = ?
+                """;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, entity.getId());
+            preparedStatement.execute();
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -131,6 +162,31 @@ public class ProjectsRepository implements Repository<ProjectsDao> {
 
     @Override
     public ProjectsDao update(ProjectsDao entity) {
-        return null;
+        final String query = """
+                update projects set
+                name = ?,
+                task_difficulty = ?,
+                company_id = ?,
+                customer_id = ?,
+                cost = ?,
+                date_create = ?
+                where id = ?
+                """;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, entity.getName());
+            preparedStatement.setString(2, entity.getTask_difficulty());
+            preparedStatement.setInt(3, entity.getCompanyId());
+            preparedStatement.setInt(4, entity.getCustomerId());
+            preparedStatement.setInt(5, entity.getCost());
+            preparedStatement.setTimestamp(6, Timestamp.valueOf(entity.getDatePosted()));
+            preparedStatement.setInt(7, entity.getId());
+            preparedStatement.execute();
+            connection.commit();
+            return entity;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public class DevelopersRepository implements Repository<DevelopersDao> {
     private final Connection connection;
-    private DevelopersMapper developersMapper=new DevelopersMapper();
+    private DevelopersMapper developersMapper = new DevelopersMapper();
 
     public DevelopersRepository(Connection connection) {
         this.connection = connection;
@@ -41,21 +41,81 @@ public class DevelopersRepository implements Repository<DevelopersDao> {
 
     @Override
     public void delete(DevelopersDao entity) {
+        final String query = """
+                delete from developers
+                where id = ?
+                """;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, entity.getId());
+            preparedStatement.execute();
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public Optional<DevelopersDao> findById(int id) {
-        return null;
+        final String FIND_BY_ID = "SELECT * FROM developers WHERE id = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(developersMapper.map(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.empty();
     }
 
     @Override
     public List<DevelopersDao> findAll() {
-        return null;
+        final String query = """
+                select *
+                from developers
+                 """;
+        List<DevelopersDao> developers = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                developers.add(developersMapper.map(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return developers;
     }
 
     @Override
     public DevelopersDao update(DevelopersDao entity) {
-        return null;
+        final String query = """
+                update developers set
+                first_name = ?, 
+                last_name = ?,
+                email = ?,
+                phone_number = ?,
+                salary = ?
+                where id = ?
+                """;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, entity.getFirstName());
+            preparedStatement.setString(2, entity.getLastName());
+            preparedStatement.setString(3, entity.getEmail());
+            preparedStatement.setString(4, entity.getPhoneNumber());
+            preparedStatement.setInt(5, entity.getSalary());
+            preparedStatement.setInt(6, entity.getId());
+            preparedStatement.execute();
+            connection.commit();
+            return entity;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public List<DevelopersDao> listOfJavaDevelopers() {
@@ -97,4 +157,18 @@ public class DevelopersRepository implements Repository<DevelopersDao> {
             throw new RuntimeException(e);
         }
     }
+
+    public void saveSkills(int idDeveloper, int idNameLevel) {
+        final String INSERT = "INSERT INTO developers_skills(developer_id, skill_id)" +
+                " VALUES(?,?)";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
+            preparedStatement.setInt(1,idDeveloper);
+            preparedStatement.setInt(2, idNameLevel);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

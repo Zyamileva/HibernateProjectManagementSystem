@@ -18,4 +18,6 @@ public interface DeveloperService {
     void delete(DevelopersDto developers);
 
     public List<DevelopersDto> listOfMiddleDevelopers();
+
+    public void saveSkills(int idDeveloper, int idNameLevel);
 }

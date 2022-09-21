@@ -4,6 +4,7 @@ import model.dao.DevelopersDao;
 import model.dao.ProjectsDao;
 import model.dto.DevelopersDto;
 import model.dto.ProjectsDto;
+import model.dto.SkillsDto;
 import repository.ProjectsRepository;
 import service.converter.Converter;
 
@@ -25,6 +26,10 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     @Override
+    public ProjectsDto saveProject(ProjectsDto projectsDto) {
+        return converterProjects.from(projectsRepository.save(converterProjects.to(projectsDto)));
+    }
+    @Override
     public Optional<ProjectsDto> findById(int projectId) {
         return projectsRepository.findById(projectId).map(element -> converterProjects.from(element));
     }
@@ -35,12 +40,8 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     @Override
-    public boolean existById(int id) {
-        return false;
-    }
-
-    @Override
     public void delete(ProjectsDto projectsDto) {
+        projectsRepository.delete(converterProjects.to(projectsDto));
     }
 
     @Override
