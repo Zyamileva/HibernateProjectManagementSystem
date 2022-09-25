@@ -5,7 +5,7 @@ import view.View;
 
 public class Exit implements Command {
     public static final String EXIT = "exit";
-    private View view;
+    private final View view;
 
     public Exit(View view) {
         this.view = view;

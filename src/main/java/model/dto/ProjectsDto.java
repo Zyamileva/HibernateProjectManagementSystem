@@ -7,14 +7,13 @@ import java.util.Objects;
 
 public class ProjectsDto extends PersistentEntity {
     private String name;
-
     private LocalDateTime datePosted;
     private String task_difficulty;
     private int customerId;
     private int companyId;
     private int cost;
 
-    public ProjectsDto(String name, LocalDateTime datePosted, String task_difficulty, int customerId,
+    public ProjectsDto(String name, String task_difficulty, int customerId,
                        int companyId, int cost) {
         this.name = name;
         this.datePosted = datePosted;

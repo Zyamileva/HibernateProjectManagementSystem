@@ -42,18 +42,17 @@ public class Main {
         CompaniesServiceImpl companiesService = new CompaniesServiceImpl(companiesRepository, companiesConverter);
         CustomersServiceImpl customersService = new CustomersServiceImpl(customersRepository, customersConverter);
 
-        List<SkillsDao> skills = skillsRepository.findAll();
-        List<String> nameSkills = skills.stream().map(SkillsDao::getName).toList();
-        List<String> levelSkills = skills.stream().map(SkillsDao::getLevel).toList();
-
         List<Command> commands = new ArrayList<>();
         commands.add(new Help(view));
         commands.add(new Exit(view));
-        commands.add(new AddDeveloper(view, developerService, skillsService, nameSkills, levelSkills));
+        commands.add(new Add(view, developerService, skillsService, companiesService, customersService, projectsService));
+        commands.add(new Delete(view, developerService, skillsService, companiesService, customersService, projectsService));
+        commands.add(new Update(view, developerService, skillsService, companiesService, customersService, projectsService));
+        commands.add(new Select(view, developerService, skillsService, companiesService, customersService, projectsService));
         commands.add(new SalleryOfProjects(view, projectsService));
         commands.add(new ListDevelopersOfProjects(view, projectsService));
-        commands.add(new ListOfDeveloperSkillName(view, developerService, nameSkills));
-        commands.add(new LestOfDevelopersSkillLevel(view, developerService, levelSkills));
+        commands.add(new ListOfDeveloperSkillName(view, developerService, skillsService));
+        commands.add(new ListOfDevelopersSkillLevel(view, developerService,skillsService));
         commands.add(new ListOfProjects(view, projectsService));
 
         Controller controller = new Controller(view, commands);

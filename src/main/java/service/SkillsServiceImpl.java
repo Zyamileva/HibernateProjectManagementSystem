@@ -42,7 +42,13 @@ public class SkillsServiceImpl implements SkillsService {
         skillsRepository.delete(converterSkills.to(skills));
     }
 
+    @Override
     public int findByNameLevel(String name, String level) {
         return skillsRepository.findByNameLevel(name, level);
+    }
+
+    @Override
+    public void update(SkillsDto skills) {
+        skillsRepository.update(converterSkills.to(skills));
     }
 }

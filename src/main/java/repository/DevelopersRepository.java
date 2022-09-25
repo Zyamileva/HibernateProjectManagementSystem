@@ -49,7 +49,6 @@ public class DevelopersRepository implements Repository<DevelopersDao> {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, entity.getId());
             preparedStatement.execute();
-            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -91,7 +90,7 @@ public class DevelopersRepository implements Repository<DevelopersDao> {
     }
 
     @Override
-    public DevelopersDao update(DevelopersDao entity) {
+    public void update(DevelopersDao entity) {
         final String query = """
                 update developers set
                 first_name = ?, 
@@ -110,25 +109,23 @@ public class DevelopersRepository implements Repository<DevelopersDao> {
             preparedStatement.setInt(5, entity.getSalary());
             preparedStatement.setInt(6, entity.getId());
             preparedStatement.execute();
-            connection.commit();
-            return entity;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
     }
 
-    public List<DevelopersDao> listOfJavaDevelopers() {
+    public List<DevelopersDao> listOfSkillNameDevelopers(String skillName) {
         final String query = """
                 select d.*
                 from developers as d
                 join developers_skills as ds ON ds.developer_id = d.id
-                join skills as s on s.id = ds.skill_id and s.name ='Java'
+                join skills as s on s.id = ds.skill_id and s.name = ?
                 """;
         List<DevelopersDao> developers = new ArrayList<>();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, skillName);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 developers.add(developersMapper.map(resultSet));
             }
@@ -138,17 +135,18 @@ public class DevelopersRepository implements Repository<DevelopersDao> {
         }
     }
 
-    public List<DevelopersDao> listOfMiddleDevelopers() {
+    public List<DevelopersDao> listOfSkillLevelDevelopers(String skillLevel) {
         final String query = """
                 select d.*
                 from developers as d
                 join developers_skills as ds ON ds.developer_id = d.id
-                join skills as s on s.id = ds.skill_id and s.level ='Middle'
+                join skills as s on s.id = ds.skill_id and s.level = ?
                 """;
         List<DevelopersDao> developers = new ArrayList<>();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, skillLevel);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 developers.add(developersMapper.map(resultSet));
             }
@@ -163,11 +161,39 @@ public class DevelopersRepository implements Repository<DevelopersDao> {
                 " VALUES(?,?)";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
-            preparedStatement.setInt(1,idDeveloper);
+            preparedStatement.setInt(1, idDeveloper);
             preparedStatement.setInt(2, idNameLevel);
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteOfIdsDeveloper(int developerId) {
+        final String query = """
+                delete from developers_skills
+                where developer_id = ?
+                """;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, developerId);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteOfIdsSkill(int skillId) {
+        final String query = """
+                delete from developers_skills
+                where skill_id = ?
+                """;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, skillId);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

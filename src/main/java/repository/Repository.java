@@ -12,5 +12,5 @@ public interface Repository<T> {
 
     List<T> findAll();
 
-    T update(T entity);
+    void update(T entity);
 }

@@ -8,8 +8,8 @@ import java.util.List;
 
 public class ListOfProjects implements Command {
     public static final String LIST_OF_PROJECTS = "query_5";
-    private View view;
-    ProjectsService projectsService;
+    private final View view;
+    private final ProjectsService projectsService;
 
     public ListOfProjects(View view, ProjectsService projectsService) {
         this.view = view;
@@ -23,11 +23,11 @@ public class ListOfProjects implements Command {
 
     @Override
     public void execute() {
-
         List<ProjectsDto> allProjects = projectsService.findAll();
         view.write("   Date_create      -  Name     - Count   ");
         for (ProjectsDto projects : allProjects) {
             view.write(projects.getDatePosted() + " - " + projects.getName() + " - " + projectsService.CountDevelopersOfProjects(projects.getId()));
         }
+        view.write(String.format("Enter %s to see all command", Help.HELP));
     }
 }

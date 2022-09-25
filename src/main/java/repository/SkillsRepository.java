@@ -45,7 +45,6 @@ public class SkillsRepository implements Repository<SkillsDao> {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, entity.getId());
             preparedStatement.execute();
-            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -87,7 +86,7 @@ public class SkillsRepository implements Repository<SkillsDao> {
     }
 
     @Override
-    public SkillsDao update(SkillsDao entity) {
+    public void update(SkillsDao entity) {
         final String query = """
                 update skills set
                    name = ?,
@@ -100,11 +99,8 @@ public class SkillsRepository implements Repository<SkillsDao> {
             preparedStatement.setString(2, entity.getLevel());
             preparedStatement.setInt(3, entity.getId());
             preparedStatement.execute();
-            connection.commit();
-            return entity;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
     }
 

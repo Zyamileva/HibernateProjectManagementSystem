@@ -1,6 +1,7 @@
 package service;
 
 import model.dto.CompaniesDto;
+import model.dto.DevelopersDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,4 +15,6 @@ public interface CompaniesService {
     List<CompaniesDto> findAll();
 
     void delete(CompaniesDto companies);
+
+    void update(CompaniesDto companies);
 }

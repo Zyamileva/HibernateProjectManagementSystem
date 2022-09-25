@@ -29,6 +29,7 @@ public class ProjectsServiceImpl implements ProjectsService {
     public ProjectsDto saveProject(ProjectsDto projectsDto) {
         return converterProjects.from(projectsRepository.save(converterProjects.to(projectsDto)));
     }
+
     @Override
     public Optional<ProjectsDto> findById(int projectId) {
         return projectsRepository.findById(projectId).map(element -> converterProjects.from(element));
@@ -37,6 +38,16 @@ public class ProjectsServiceImpl implements ProjectsService {
     @Override
     public List<ProjectsDto> findAll() {
         return projectsRepository.findAll().stream().map(element -> converterProjects.from(element)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteOfIdsProject(int projectId) {
+        projectsRepository.deleteOfIdsProject(projectId);
+    }
+
+    @Override
+    public void deleteOfIdsDeveloper(int developerId) {
+        projectsRepository.deleteOfIdsDeveloper(developerId);
     }
 
     @Override
@@ -58,5 +69,15 @@ public class ProjectsServiceImpl implements ProjectsService {
     @Override
     public int CountDevelopersOfProjects(int id) {
         return projectsRepository.CountDevelopersOfProjects(id);
+    }
+
+    @Override
+    public void saveDevelopers(int idDeveloper, int idProject) {
+        projectsRepository.saveDeveloper(idDeveloper, idProject);
+    }
+
+    @Override
+    public void update(ProjectsDto projects) {
+        projectsRepository.update(converterProjects.to(projects));
     }
 }

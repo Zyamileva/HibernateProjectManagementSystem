@@ -32,7 +32,7 @@ public class CustomersRepository implements Repository<CustomersDao> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return entity;
     }
 
     @Override
@@ -45,7 +45,6 @@ public class CustomersRepository implements Repository<CustomersDao> {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, entity.getId());
             preparedStatement.execute();
-            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -87,10 +86,10 @@ public class CustomersRepository implements Repository<CustomersDao> {
     }
 
     @Override
-    public CustomersDao update(CustomersDao entity) {
+    public void update(CustomersDao entity) {
         final String query = """
                 update customers set
-                first_name = ?, 
+                name = ?, 
                 contact_person = ?,
                 phone = ?
                 where id = ?
@@ -102,11 +101,8 @@ public class CustomersRepository implements Repository<CustomersDao> {
             preparedStatement.setString(3, entity.getPhoneNumber());
             preparedStatement.setInt(4, entity.getId());
             preparedStatement.execute();
-            connection.commit();
-            return entity;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
     }
 }

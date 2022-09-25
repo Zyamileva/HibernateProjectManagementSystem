@@ -6,6 +6,7 @@ import repository.resultSetMapper.DevelopersMapper;
 import repository.resultSetMapper.ProjectsMapper;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -91,6 +92,7 @@ public class ProjectsRepository implements Repository<ProjectsDao> {
                 " VALUES(?,?,?,?,?,?)";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
+            entity.setDatePosted(LocalDateTime.now());
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getTask_difficulty());
             preparedStatement.setInt(3, entity.getCompanyId());
@@ -119,7 +121,6 @@ public class ProjectsRepository implements Repository<ProjectsDao> {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, entity.getId());
             preparedStatement.execute();
-            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -160,8 +161,36 @@ public class ProjectsRepository implements Repository<ProjectsDao> {
         return projects;
     }
 
+    public void deleteOfIdsProject(int projectId) {
+        final String query = """
+                delete from developers_projects
+                where project_id = ?
+                """;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, projectId);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteOfIdsDeveloper(int developerId) {
+        final String query = """
+                delete from developers_skills
+                where developer_id = ?
+                """;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, developerId);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
-    public ProjectsDao update(ProjectsDao entity) {
+    public void update(ProjectsDao entity) {
         final String query = """
                 update projects set
                 name = ?,
@@ -182,11 +211,21 @@ public class ProjectsRepository implements Repository<ProjectsDao> {
             preparedStatement.setTimestamp(6, Timestamp.valueOf(entity.getDatePosted()));
             preparedStatement.setInt(7, entity.getId());
             preparedStatement.execute();
-            connection.commit();
-            return entity;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+        }
+    }
+
+    public void saveDeveloper(int idDeveloper, int idProject) {
+        final String INSERT = "INSERT INTO developers_projects(developer_id, project_id)" +
+                " VALUES(?,?)";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
+            preparedStatement.setInt(1, idDeveloper);
+            preparedStatement.setInt(2, idProject);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

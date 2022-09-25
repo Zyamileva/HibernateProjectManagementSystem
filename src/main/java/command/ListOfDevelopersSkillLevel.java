@@ -8,31 +8,31 @@ import view.View;
 
 import java.util.List;
 
-public class ListOfDeveloperSkillName implements Command {
-    public static final String LIST_OF_SKILL_DEVELOPERS = "query_3";
+public class ListOfDevelopersSkillLevel implements Command {
+    public static final String LIST_OF_SKILL_LEVEL_DEVELOPERS = "query_4";
     private final View view;
     private final DeveloperService developersService;
-    private final List<String> nameSkills;
+    private final List<String> levelSkills;
 
-    public ListOfDeveloperSkillName(View view, DeveloperService developersService, SkillsService skillsService) {
+    public ListOfDevelopersSkillLevel(View view, DeveloperService developersService, SkillsService skillsService) {
         this.view = view;
         this.developersService = developersService;
         List<SkillsDto> skills = skillsService.findAll();
-        this.nameSkills = skills.stream().map(SkillsDto::getName).toList();
+        this.levelSkills = skills.stream().map(SkillsDto::getLevel).toList();
     }
 
     @Override
     public boolean canExecute(String input) {
-        return (input.equals(LIST_OF_SKILL_DEVELOPERS));
+        return (input.equals(LIST_OF_SKILL_LEVEL_DEVELOPERS));
     }
 
     @Override
     public void execute() {
-        view.write("Enter name of skills: Java, C++, C#, JS");
+        view.write("Enter level of skills: Junior, Middle, Senior");
         while (true) {
-            String skill = view.read();
-            if (nameSkills.stream().anyMatch(element -> element.equals(skill))) {
-                List<DevelopersDto> developers = developersService.listOfSkillNameDevelopers(skill);
+            String level = view.read();
+            if (levelSkills.stream().anyMatch(element -> element.equals(level))) {
+                List<DevelopersDto> developers = developersService.listOfSkillLevelDevelopers(level);
                 developers.forEach(System.out::println);
                 view.write(String.format("Enter %s to see all command", Help.HELP));
                 break;

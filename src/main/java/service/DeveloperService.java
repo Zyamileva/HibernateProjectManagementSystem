@@ -1,5 +1,6 @@
 package service;
 
+import model.dto.CustomersDto;
 import model.dto.DevelopersDto;
 
 import java.util.List;
@@ -13,11 +14,17 @@ public interface DeveloperService {
 
     List<DevelopersDto> findAll();
 
-    List<DevelopersDto> listOfJavaDevelopers();
-
     void delete(DevelopersDto developers);
 
-    public List<DevelopersDto> listOfMiddleDevelopers();
+    void deleteOfIdsDeveloper(int idDeveloper);
 
-    public void saveSkills(int idDeveloper, int idNameLevel);
+    void deleteOfIdsSkill(int idSkill);
+    List<DevelopersDto> listOfSkillLevelDevelopers(String skillLevel);
+
+    List<DevelopersDto> listOfSkillNameDevelopers(String skillName);
+
+    void saveSkills(int idDeveloper, int idNameLevel);
+
+    void update (DevelopersDto developer);
+
 }

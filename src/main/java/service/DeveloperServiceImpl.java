@@ -40,19 +40,34 @@ public class DeveloperServiceImpl implements DeveloperService {
     }
 
     @Override
-    public List<DevelopersDto> listOfJavaDevelopers() {
-        return developersRepository.listOfJavaDevelopers().stream().map((element) -> converter.from(element))
+    public void deleteOfIdsDeveloper(int idDeveloper) {
+        developersRepository.deleteOfIdsDeveloper(idDeveloper);
+    }
+
+    @Override
+    public void deleteOfIdsSkill(int idSkill) {
+        developersRepository.deleteOfIdsSkill(idSkill);
+    }
+
+    @Override
+    public List<DevelopersDto> listOfSkillNameDevelopers(String skillName) {
+        return developersRepository.listOfSkillNameDevelopers(skillName).stream().map((element) -> converter.from(element))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<DevelopersDto> listOfMiddleDevelopers() {
-        return developersRepository.listOfMiddleDevelopers().stream().map((element) -> converter.from(element))
+    public List<DevelopersDto> listOfSkillLevelDevelopers(String skillLevel) {
+        return developersRepository.listOfSkillLevelDevelopers(skillLevel).stream().map((element) -> converter.from(element))
                 .collect(Collectors.toList());
     }
 
     @Override
     public void saveSkills(int idDeveloper, int idNameLevel) {
         developersRepository.saveSkills(idDeveloper, idNameLevel);
+    }
+
+    @Override
+    public void update(DevelopersDto developer) {
+        developersRepository.update(converter.to(developer));
     }
 }

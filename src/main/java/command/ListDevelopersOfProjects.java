@@ -9,8 +9,8 @@ import java.util.List;
 
 public class ListDevelopersOfProjects implements Command {
     public static final String LIST_DEVELOPERS_OF_PROJECTS = "query_2";
-    private View view;
-    ProjectsServiceImpl projectsService;
+    private final View view;
+    private final ProjectsServiceImpl projectsService;
 
     public ListDevelopersOfProjects(View view, ProjectsServiceImpl projectsService) {
         this.view = view;
@@ -25,11 +25,19 @@ public class ListDevelopersOfProjects implements Command {
     @Override
     public void execute() {
         view.write("Enter id of projects.");
-        int id = Integer.parseInt(view.read());
-        ProjectsDto projectsDto = projectsService.findById(id).get();
-        List<DevelopersDto> developers = projectsService.ListDevelopersOfProjects(id);
-        view.write("Project: " + projectsDto.getName());
-        view.write("Developers:");
-        developers.stream().forEach(System.out::println);
+        while (true) {
+            int id = Integer.parseInt(view.read());
+            if (projectsService.findById(id).isPresent()) {
+                ProjectsDto projectsDto = projectsService.findById(id).get();
+                List<DevelopersDto> developers = projectsService.ListDevelopersOfProjects(id);
+                view.write("Project: " + projectsDto.getName());
+                view.write("Developers:");
+                developers.forEach(System.out::println);
+                view.write(String.format("Enter %s to see all command", Help.HELP));
+                break;
+            } else {
+                view.write("There is no such id in the table. Enter again");
+            }
+        }
     }
 }

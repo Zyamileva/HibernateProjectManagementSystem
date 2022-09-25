@@ -2,7 +2,9 @@ package service;
 
 import model.dao.CustomersDao;
 import model.dao.SkillsDao;
+import model.dto.CompaniesDto;
 import model.dto.CustomersDto;
+import model.dto.DevelopersDto;
 import model.dto.SkillsDto;
 import repository.CustomersRepository;
 import repository.SkillsRepository;
@@ -41,5 +43,10 @@ public class CustomersServiceImpl implements CustomersService {
     @Override
     public void delete(CustomersDto customer) {
         customersRepository.delete(converterCustomer.to(customer));
+    }
+
+    @Override
+    public void update(CustomersDto customers) {
+        customersRepository.update(converterCustomer.to(customers));
     }
 }

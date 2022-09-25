@@ -31,7 +31,7 @@ public class CompaniesRepository implements Repository<CompaniesDao> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return entity;
     }
 
     @Override
@@ -44,7 +44,6 @@ public class CompaniesRepository implements Repository<CompaniesDao> {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, entity.getId());
             preparedStatement.execute();
-            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -86,7 +85,7 @@ public class CompaniesRepository implements Repository<CompaniesDao> {
     }
 
     @Override
-    public CompaniesDao update(CompaniesDao entity) {
+    public void update(CompaniesDao entity) {
         final String query = """
                 update companies set
                 name = ?, 
@@ -99,11 +98,8 @@ public class CompaniesRepository implements Repository<CompaniesDao> {
             preparedStatement.setInt(2, entity.getStaff());
             preparedStatement.setInt(3, entity.getId());
             preparedStatement.execute();
-            connection.commit();
-            return entity;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
     }
 }

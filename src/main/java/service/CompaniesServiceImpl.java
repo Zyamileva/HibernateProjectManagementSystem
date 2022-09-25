@@ -4,6 +4,7 @@ import model.dao.CompaniesDao;
 import model.dao.CustomersDao;
 import model.dto.CompaniesDto;
 import model.dto.CustomersDto;
+import model.dto.DevelopersDto;
 import repository.CompaniesRepository;
 import repository.CustomersRepository;
 import service.converter.Converter;
@@ -40,5 +41,10 @@ public class CompaniesServiceImpl implements CompaniesService {
     @Override
     public void delete(CompaniesDto companies) {
         companiesRepository.delete(converterCompany.to(companies));
+    }
+
+    @Override
+    public void update(CompaniesDto companies) {
+        companiesRepository.update(converterCompany.to(companies));
     }
 }

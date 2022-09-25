@@ -15,4 +15,8 @@ public interface SkillsService {
     List<SkillsDto> findAll();
 
     void delete(SkillsDto skills);
+
+    public int findByNameLevel(String name, String level);
+
+    void update(SkillsDto skills);
 }
