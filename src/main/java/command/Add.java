@@ -4,9 +4,7 @@ import model.dto.*;
 import service.*;
 import view.View;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 public class Add implements Command {
     public static final String ADD_TO_TABLES = "add";
@@ -207,27 +205,32 @@ public class Add implements Command {
                 developerService.saveDeveloper(new DevelopersDto(first_name, last_name, email, phone_number, salary));
 
         while (true) {
-            view.write("Enter name of skills: Java, C++, C#, JS");
+            view.write("Enter name of skills:");
+            view.write(nameSkills.stream().distinct().toList().toString());
             String skill = view.read();
             if (nameSkills.stream().anyMatch(element -> element.equals(skill))) {
                 while (true) {
-                    view.write("Enter level of skills: Junior, Middle, Senior");
+                    view.write("Enter level of skills:");
+                    List<SkillsDto> all = skillsService.findAll();
+                    view.write(all.stream().filter(el -> el.getName().equals(skill))
+                            .map(SkillsDto::getLevel).toList().toString());
                     String level = view.read();
                     if (levelSkills.stream().anyMatch(element -> element.equals(level))) {
                         int idNameLevel = skillsService.findByNameLevel(skill, level);
                         developerService.saveSkills(developersDto.getId(), idNameLevel);
                         break;
                     } else {
-                        view.write("Error. Enter level of skills: Junior, Middle, Senior");
+                        view.write("Error. Enter level of skills");
                     }
                 }
                 view.write("If you have else skills enter 'Yes' else 'No'");
                 if (!view.read().equals("Yes")) {
                     break;
-                } else {
-                    view.write("Error. Enter name of skills: Java, C++, C#, JS");
                 }
+            } else {
+                view.write("Error. Enter name of skills");
             }
+
         }
         view.write("Developer added.");
     }
