@@ -20,7 +20,7 @@ public class ProjectCommand extends Command {
     @Override
     public NextCommands nextCommands() {
         return new NextCommands(new AddProjects(), new DeleteProject(), new SelectProject(), new UpdateProjects(),
-                new ListOfProjects(), new SalaryOfProjects(), new AddDeveloperOfProjects(),
+                new FindAllProjects(), new ListOfProjects(), new SalaryOfProjects(), new AddDeveloperOfProjects(),
                 new DeleteDeveloperOfProjects(), new ExitCommand());
     }
 }

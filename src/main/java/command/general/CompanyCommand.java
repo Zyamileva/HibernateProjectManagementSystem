@@ -4,10 +4,7 @@ import command.Command;
 import command.CommandEnum;
 import command.CommandResponse;
 import command.NextCommands;
-import command.companies.AddCompany;
-import command.companies.DeleteCompany;
-import command.companies.SelectCompany;
-import command.companies.UpdateCompany;
+import command.companies.*;
 
 public class CompanyCommand extends Command {
 
@@ -23,6 +20,6 @@ public class CompanyCommand extends Command {
     @Override
     public NextCommands nextCommands() {
         return new NextCommands(new AddCompany(), new DeleteCompany(),new SelectCompany(),new UpdateCompany(),
-                new ExitCommand());
+               new FindAllCompany(), new ExitCommand());
     }
 }

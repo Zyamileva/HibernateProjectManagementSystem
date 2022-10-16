@@ -4,10 +4,7 @@ import command.Command;
 import command.CommandEnum;
 import command.CommandResponse;
 import command.NextCommands;
-import command.customers.AddCustomer;
-import command.customers.DeleteCustomer;
-import command.customers.SelectCustomer;
-import command.customers.UpdateCustomer;
+import command.customers.*;
 
 public class CustomerCommand extends Command {
 
@@ -23,6 +20,6 @@ public class CustomerCommand extends Command {
     @Override
     public NextCommands nextCommands() {
         return new NextCommands(new AddCustomer(), new DeleteCustomer(), new SelectCustomer(), new UpdateCustomer(),
-        new ExitCommand());
+       new FindAllCustomer(), new ExitCommand());
     }
 }

@@ -4,10 +4,7 @@ import command.Command;
 import command.CommandEnum;
 import command.CommandResponse;
 import command.NextCommands;
-import command.skills.AddSkill;
-import command.skills.DeleteSkill;
-import command.skills.SelectSkill;
-import command.skills.UpdateSkill;
+import command.skills.*;
 
 public class SkillCommand extends Command {
 
@@ -22,6 +19,7 @@ public class SkillCommand extends Command {
 
     @Override
     public NextCommands nextCommands() {
-        return new NextCommands(new AddSkill(),new DeleteSkill(), new SelectSkill(),new UpdateSkill(), new ExitCommand());
+        return new NextCommands(new AddSkill(), new DeleteSkill(), new SelectSkill(), new UpdateSkill(),
+                new FindAllSkill(), new ExitCommand());
     }
 }

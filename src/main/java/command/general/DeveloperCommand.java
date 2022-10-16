@@ -20,7 +20,7 @@ public class DeveloperCommand extends Command {
     @Override
     public NextCommands nextCommands() {
         return new NextCommands(new AddDeveloper(), new DeleteDeveloper(),new SelectDeveloper(),new UpdateDeveloper(),
-                new ListDevelopersOfProjects(), new ListOfDeveloperSkillName(), new ListOfDevelopersSkillLevel(),
-               new AddSkillDeveloper(), new DeleteSkillDeveloper(), new ExitCommand());
+                new FindAllDeveloper(),new ListDevelopersOfProjects(), new ListOfDeveloperSkillName(),
+                new ListOfDevelopersSkillLevel(), new AddSkillDeveloper(), new DeleteSkillDeveloper(), new ExitCommand());
     }
 }

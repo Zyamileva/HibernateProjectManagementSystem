@@ -28,6 +28,12 @@ public enum CommandEnum {
     UPDATE_DEVELOPER("Update developer"),
     UPDATE_PROJECT("Update project"),
     UPDATE_SKILL("Update skill"),
+
+    FIND_ALL_COMPANY("Find all company"),
+    FIND_ALL_CUSTOMER("Find all customer"),
+    FIND_ALL_DEVELOPER("Find all developer"),
+    FIND_ALL_PROJECT("Find all project"),
+    FIND_ALL_SKILL("Find all skill"),
     LIST_DEVELOPERS_OF_PROJECTS("List developers of projects"),
     LIST_DEVELOPERS_OF_SKILL_NAME("List developers of skill Name"),
     LIST_DEVELOPERS_OF_SKILL_LEVEL("List developers of skill Level"),
