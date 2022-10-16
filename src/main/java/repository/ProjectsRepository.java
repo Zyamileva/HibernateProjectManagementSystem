@@ -142,6 +142,22 @@ public class ProjectsRepository implements Repository<ProjectsDao> {
         return Optional.empty();
     }
 
+    public boolean findByIdDeveloperIdProjects(int idDeveloper, int idProject) {
+        final String FIND_BY_ID = "SELECT * FROM developers_projects WHERE developer_id = ? and project_id = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
+            preparedStatement.setInt(1, idDeveloper);
+            preparedStatement.setInt(2, idProject);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
     @Override
     public List<ProjectsDao> findAll() {
         final String query = """
@@ -175,14 +191,29 @@ public class ProjectsRepository implements Repository<ProjectsDao> {
         }
     }
 
-    public void deleteOfIdsDeveloper(int developerId) {
+    public void deleteProjectOfIdsDeveloper(int developerId) {
         final String query = """
-                delete from developers_skills
+                delete from developers_projects
                 where developer_id = ?
                 """;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, developerId);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteOfIdsDeveloperOfProject(int developerId, int projectId) {
+        final String query = """
+                delete from developers_projects
+                where developer_id = ? and project_id = ?
+                """;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, developerId);
+            preparedStatement.setInt(2, projectId);
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();

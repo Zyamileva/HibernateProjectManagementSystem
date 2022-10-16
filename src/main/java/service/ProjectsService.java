@@ -16,11 +16,14 @@ public interface ProjectsService {
 
     public void deleteOfIdsProject(int projectId);
 
-    public void deleteOfIdsDeveloper(int developerId);
+    public void deleteProjectOfIdsDeveloper(int developerId);
+
+    public void deleteOfIdsDeveloperOfProject(int developerId, int projectsId);
+    public boolean findByIdDeveloperIdProjects(int idDeveloper, int idProject);
 
     void delete(ProjectsDto projectsDto);
 
-    int sallaryOfProjects(int id);
+    int salaryOfProjects(int id);
 
     public List<DevelopersDto> ListDevelopersOfProjects(int id);
 
@@ -28,6 +31,5 @@ public interface ProjectsService {
 
     public void saveDevelopers(int idDeveloper, int idProject);
 
-    void update (ProjectsDto projects);
+    void update(ProjectsDto projects);
 }
-

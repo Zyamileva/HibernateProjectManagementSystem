@@ -47,7 +47,7 @@ public class SkillsDto extends PersistentEntity {
 
     @Override
     public String toString() {
-        return "Skills{" +
+        return "Skills {" +
                 "name='" + name + '\'' +
                 ", level='" + level + '\'' +
                 ", id=" + id +

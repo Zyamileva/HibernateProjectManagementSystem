@@ -45,9 +45,10 @@ public class CustomersDto extends PersistentEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CustomersDto customersDao)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        return name.equals(customersDao.name) && contactPerson.equals(customersDao.contactPerson) && phoneNumber.equals(customersDao.phoneNumber);
+        CustomersDto that = (CustomersDto) o;
+        return Objects.equals(name, that.name) && Objects.equals(contactPerson, that.contactPerson) && Objects.equals(phoneNumber, that.phoneNumber);
     }
 
     @Override
@@ -57,7 +58,7 @@ public class CustomersDto extends PersistentEntity {
 
     @Override
     public String toString() {
-        return "CustomersDao{" +
+        return "Customers {" +
                 "name='" + name + '\'' +
                 ", contactPerson='" + contactPerson + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +

@@ -64,7 +64,7 @@ public class DevelopersDto extends PersistentEntity {
 
     @Override
     public String toString() {
-        return "DevelopersDto{" +
+        return "Developers {" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +

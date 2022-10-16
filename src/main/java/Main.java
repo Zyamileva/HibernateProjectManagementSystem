@@ -1,62 +1,7 @@
-import command.*;
-import config.DataBaseManagerConnector;
-import controller.Controller;
-import model.dao.SkillsDao;
-import repository.*;
-import service.*;
-import service.converter.*;
-import view.Console;
-import view.View;
-
-import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import command.CommandInvoker;
 
 public class Main {
-
     public static void main(String[] args) {
-        String dbUsername = System.getenv("dbUsername");
-        String dbPassword = System.getenv("dbPassword");
-
-        Connection connector = DataBaseManagerConnector.getInstance().getConnector();
-
-        Scanner scanner = new Scanner(System.in);
-        View view = new Console(scanner);
-
-        DeveloperConverter developerConverter = new DeveloperConverter();
-        ProjectsConverter projectsConverter = new ProjectsConverter();
-        SkillsConverter skillsConverter = new SkillsConverter();
-        CompaniesConverter companiesConverter = new CompaniesConverter();
-        CustomersConverter customersConverter = new CustomersConverter();
-
-        DevelopersRepository developersRepository = new DevelopersRepository(connector);
-        SkillsRepository skillsRepository = new SkillsRepository(connector);
-        CompaniesRepository companiesRepository = new CompaniesRepository(connector);
-        ProjectsRepository projectsRepository = new ProjectsRepository(connector);
-        CustomersRepository customersRepository = new CustomersRepository(connector);
-
-        DeveloperService developerService = new DeveloperServiceImpl(developersRepository, developerConverter);
-        SkillsServiceImpl skillsService = new SkillsServiceImpl(skillsRepository, skillsConverter);
-        ProjectsServiceImpl projectsService = new ProjectsServiceImpl(projectsRepository, developerConverter, projectsConverter);
-        CompaniesServiceImpl companiesService = new CompaniesServiceImpl(companiesRepository, companiesConverter);
-        CustomersServiceImpl customersService = new CustomersServiceImpl(customersRepository, customersConverter);
-
-        List<Command> commands = new ArrayList<>();
-        commands.add(new Help(view));
-        commands.add(new Exit(view));
-        commands.add(new Add(view, developerService, skillsService, companiesService, customersService, projectsService));
-        commands.add(new Delete(view, developerService, skillsService, companiesService, customersService, projectsService));
-        commands.add(new Update(view, developerService, skillsService, companiesService, customersService, projectsService));
-        commands.add(new Select(view, developerService, skillsService, companiesService, customersService, projectsService));
-        commands.add(new SalleryOfProjects(view, projectsService));
-        commands.add(new ListDevelopersOfProjects(view, projectsService));
-        commands.add(new ListOfDeveloperSkillName(view, developerService, skillsService));
-        commands.add(new ListOfDevelopersSkillLevel(view, developerService,skillsService));
-        commands.add(new ListOfProjects(view, projectsService));
-
-        Controller controller = new Controller(view, commands);
-
-        controller.run();
+        CommandInvoker.invoke();
     }
 }

@@ -90,7 +90,7 @@ public class ProjectsDto extends PersistentEntity {
 
     @Override
     public String toString() {
-        return "ProjectsDto{" +
+        return "Projects {" +
                 "name='" + name + '\'' +
                 ", datePosted=" + datePosted +
                 ", task_difficulty='" + task_difficulty + '\'' +

@@ -46,8 +46,13 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     @Override
-    public void deleteOfIdsDeveloper(int developerId) {
-        projectsRepository.deleteOfIdsDeveloper(developerId);
+    public void deleteProjectOfIdsDeveloper(int developerId) {
+        projectsRepository.deleteProjectOfIdsDeveloper(developerId);
+    }
+
+    @Override
+    public void deleteOfIdsDeveloperOfProject(int developerId, int projectsId) {
+        projectsRepository.deleteOfIdsDeveloperOfProject(developerId, projectsId);
     }
 
     @Override
@@ -56,7 +61,7 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     @Override
-    public int sallaryOfProjects(int id) {
+    public int salaryOfProjects(int id) {
         return projectsRepository.sallaryOfProjects(id);
     }
 
@@ -74,6 +79,11 @@ public class ProjectsServiceImpl implements ProjectsService {
     @Override
     public void saveDevelopers(int idDeveloper, int idProject) {
         projectsRepository.saveDeveloper(idDeveloper, idProject);
+    }
+
+    @Override
+    public boolean findByIdDeveloperIdProjects(int idDeveloper, int idProject) {
+      return projectsRepository.findByIdDeveloperIdProjects(idDeveloper, idProject);
     }
 
     @Override

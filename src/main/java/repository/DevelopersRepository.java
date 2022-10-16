@@ -169,7 +169,25 @@ public class DevelopersRepository implements Repository<DevelopersDao> {
         }
     }
 
-    public void deleteOfIdsDeveloper(int developerId) {
+    public void updateSkills(int idDeveloper, int idNameLevel, int id) {
+        final String query = """
+                update developers_skills set
+                developer_id = ?, 
+                skill_id = ?,
+                where id = ?
+                """;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, idDeveloper);
+            preparedStatement.setInt(2, idNameLevel);
+            preparedStatement.setInt(3, id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteSkillsOfDeveloper(int developerId) {
         final String query = """
                 delete from developers_skills
                 where developer_id = ?
@@ -183,7 +201,7 @@ public class DevelopersRepository implements Repository<DevelopersDao> {
         }
     }
 
-    public void deleteOfIdsSkill(int skillId) {
+    public void deleteDeveloperOfIdsSkill(int skillId) {
         final String query = """
                 delete from developers_skills
                 where skill_id = ?

@@ -40,13 +40,13 @@ public class DeveloperServiceImpl implements DeveloperService {
     }
 
     @Override
-    public void deleteOfIdsDeveloper(int idDeveloper) {
-        developersRepository.deleteOfIdsDeveloper(idDeveloper);
+    public void deleteSkillsOfDeveloper(int idDeveloper) {
+        developersRepository.deleteSkillsOfDeveloper(idDeveloper);
     }
 
     @Override
-    public void deleteOfIdsSkill(int idSkill) {
-        developersRepository.deleteOfIdsSkill(idSkill);
+    public void deleteDevelopersOfIdsSkill(int idSkill) {
+        developersRepository.deleteDeveloperOfIdsSkill(idSkill);
     }
 
     @Override

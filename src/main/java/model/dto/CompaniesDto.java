@@ -47,7 +47,7 @@ public class CompaniesDto extends PersistentEntity {
 
     @Override
     public String toString() {
-        return "Companies{" +
+        return "Companies {" +
                 "name='" + name + '\'' +
                 ", staff=" + staff +
                 ", id=" + id +

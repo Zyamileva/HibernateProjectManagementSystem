@@ -16,9 +16,9 @@ public interface DeveloperService {
 
     void delete(DevelopersDto developers);
 
-    void deleteOfIdsDeveloper(int idDeveloper);
+    void deleteSkillsOfDeveloper(int idDeveloper);
 
-    void deleteOfIdsSkill(int idSkill);
+    void deleteDevelopersOfIdsSkill(int idSkill);
     List<DevelopersDto> listOfSkillLevelDevelopers(String skillLevel);
 
     List<DevelopersDto> listOfSkillNameDevelopers(String skillName);
