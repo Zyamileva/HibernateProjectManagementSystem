@@ -12,6 +12,7 @@ import service.converter.Converter;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class CustomersServiceImpl implements CustomersService {
@@ -30,14 +31,19 @@ public class CustomersServiceImpl implements CustomersService {
     }
 
     @Override
+    public Set<CustomersDto> findByName(String name) {
+        return customersRepository.findByName(name)
+                .stream().map(element -> converterCustomer.from(element)).collect(Collectors.toSet());
+    }
+    @Override
     public Optional<CustomersDto> findById(int id) {
         return customersRepository.findById(id).map(element -> converterCustomer.from(element));
     }
 
     @Override
-    public List<CustomersDto> findAll() {
+    public Set<CustomersDto> findAll() {
         return customersRepository.findAll().stream().map(element -> converterCustomer.from(element))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     @Override

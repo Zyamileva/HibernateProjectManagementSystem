@@ -7,6 +7,7 @@ import service.converter.Converter;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DeveloperServiceImpl implements DeveloperService {
@@ -24,14 +25,20 @@ public class DeveloperServiceImpl implements DeveloperService {
     }
 
     @Override
+    public Set<DevelopersDto> findByName(String name) {
+        return developersRepository.findByName(name)
+                .stream().map(element -> converter.from(element)).collect(Collectors.toSet());
+    }
+
+    @Override
     public Optional<DevelopersDto> findById(int id) {
         return developersRepository.findById(id).map(element -> converter.from(element));
     }
 
     @Override
-    public List<DevelopersDto> findAll() {
+    public Set<DevelopersDto> findAll() {
         return developersRepository.findAll().stream().map((element) -> converter.from(element))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     @Override

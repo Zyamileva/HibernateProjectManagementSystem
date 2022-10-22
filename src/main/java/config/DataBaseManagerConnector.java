@@ -32,6 +32,11 @@ public class DataBaseManagerConnector {
 
     private Properties init() {
         Properties properties = new PropertiesConfig().loadProperties("application.properties");
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException("Error loading postgres driver", ex);
+        }
         return properties;
     }
 

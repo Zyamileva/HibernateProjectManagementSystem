@@ -1,18 +1,21 @@
 package service;
 
+import model.dto.CustomersDto;
 import model.dto.DevelopersDto;
 import model.dto.SkillsDto;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface SkillsService {
 
     SkillsDto saveSkill(SkillsDto skillsDto);
 
+    Set<SkillsDto> findByName(String name);
     Optional<SkillsDto> findById(int id);
 
-    List<SkillsDto> findAll();
+    Set<SkillsDto> findAll();
 
     void delete(SkillsDto skills);
 

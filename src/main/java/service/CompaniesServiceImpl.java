@@ -11,6 +11,7 @@ import service.converter.Converter;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class CompaniesServiceImpl implements CompaniesService {
@@ -27,15 +28,22 @@ public class CompaniesServiceImpl implements CompaniesService {
     public CompaniesDto saveCompanies(CompaniesDto companiesDto) {
         return converterCompany.from(companiesRepository.save(converterCompany.to(companiesDto)));
     }
+
+    @Override
+    public Set<CompaniesDto> findByName(String name) {
+        return companiesRepository.findByName(name).stream()
+                .map(element -> converterCompany.from(element)).collect(Collectors.toSet());
+    }
+
     @Override
     public Optional<CompaniesDto> findById(int id) {
         return companiesRepository.findById(id).map(element -> converterCompany.from(element));
     }
 
     @Override
-    public List<CompaniesDto> findAll() {
+    public Set<CompaniesDto> findAll() {
         return companiesRepository.findAll().stream().map(element -> converterCompany.from(element))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     @Override

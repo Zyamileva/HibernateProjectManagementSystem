@@ -10,6 +10,7 @@ import service.converter.Converter;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SkillsServiceImpl implements SkillsService {
@@ -27,14 +28,20 @@ public class SkillsServiceImpl implements SkillsService {
     }
 
     @Override
+    public Set<SkillsDto> findByName(String name) {
+        return skillsRepository.findByName(name)
+                .stream().map(element -> converterSkills.from(element)).collect(Collectors.toSet());
+    }
+
+    @Override
     public Optional<SkillsDto> findById(int id) {
         return skillsRepository.findById(id).map(element -> converterSkills.from(element));
     }
 
     @Override
-    public List<SkillsDto> findAll() {
+    public Set<SkillsDto> findAll() {
         return skillsRepository.findAll().stream().map(element -> converterSkills.from(element))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     @Override

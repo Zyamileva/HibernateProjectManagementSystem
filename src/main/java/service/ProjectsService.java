@@ -1,18 +1,21 @@
 package service;
 
+import model.dto.CustomersDto;
 import model.dto.DevelopersDto;
 import model.dto.ProjectsDto;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface ProjectsService {
 
     public ProjectsDto saveProject(ProjectsDto projectsDto);
 
-    Optional<ProjectsDto> findById(int projectId);
+    Set<ProjectsDto> findByName(String name);
+    Optional<ProjectsDto> findById(int id);
 
-    List<ProjectsDto> findAll();
+    Set<ProjectsDto> findAll();
 
     public void deleteOfIdsProject(int projectId);
 

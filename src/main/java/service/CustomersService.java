@@ -6,14 +6,17 @@ import model.dto.DevelopersDto;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface CustomersService {
 
     CustomersDto saveCustomer(CustomersDto customersDto);
 
+    Set<CustomersDto> findByName(String name);
+
     Optional<CustomersDto> findById(int id);
 
-    List<CustomersDto> findAll();
+    Set<CustomersDto> findAll();
 
     void delete(CustomersDto customer);
 

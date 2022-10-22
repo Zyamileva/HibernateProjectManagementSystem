@@ -7,9 +7,7 @@ import repository.resultSetMapper.ProjectsMapper;
 
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class ProjectsRepository implements Repository<ProjectsDao> {
     private static final ProjectsMapper projectsMapper = new ProjectsMapper();
@@ -127,19 +125,20 @@ public class ProjectsRepository implements Repository<ProjectsDao> {
     }
 
     @Override
-    public Optional<ProjectsDao> findById(int id) {
-        final String FIND_BY_ID = "SELECT * FROM projects WHERE id = ?";
+    public Set<ProjectsDao> findByName(String name) {
+        final String FIND_BY_NAME = "SELECT * FROM projects WHERE name LIKE ?";
+        Set<ProjectsDao> projects = new HashSet<>();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
-            preparedStatement.setInt(1, id);
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME);
+            preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return Optional.of(projectsMapper.map(resultSet));
+            while (resultSet.next()) {
+                projects.add(projectsMapper.map(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return Optional.empty();
+        return projects;
     }
 
     public boolean findByIdDeveloperIdProjects(int idDeveloper, int idProject) {
@@ -159,12 +158,28 @@ public class ProjectsRepository implements Repository<ProjectsDao> {
     }
 
     @Override
-    public List<ProjectsDao> findAll() {
+    public Optional<ProjectsDao> findById(int id) {
+        final String FIND_BY_ID = "SELECT * FROM projects WHERE id = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(projectsMapper.map(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Set<ProjectsDao> findAll() {
         final String query = """
                 select *
                 from projects
                  """;
-        List<ProjectsDao> projects = new ArrayList<>();
+        Set<ProjectsDao> projects = new HashSet<>();
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);

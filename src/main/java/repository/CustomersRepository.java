@@ -1,12 +1,11 @@
 package repository;
 
+import model.dao.CompaniesDao;
 import model.dao.CustomersDao;
 import repository.resultSetMapper.CustomerMapper;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class CustomersRepository implements Repository<CustomersDao> {
     private final Connection connection;
@@ -51,6 +50,23 @@ public class CustomersRepository implements Repository<CustomersDao> {
     }
 
     @Override
+    public Set<CustomersDao> findByName(String name) {
+        final String FIND_BY_NAME = "SELECT * FROM customers WHERE name LIKE ?";
+        Set<CustomersDao> customers = new HashSet<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME);
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                customers.add(customerMapper.map(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return customers;
+    }
+
+    @Override
     public Optional<CustomersDao> findById(int id) {
         final String FIND_BY_ID = "SELECT * FROM customers WHERE id = ?";
         try {
@@ -66,13 +82,14 @@ public class CustomersRepository implements Repository<CustomersDao> {
         return Optional.empty();
     }
 
+
     @Override
-    public List<CustomersDao> findAll() {
+    public Set<CustomersDao> findAll() {
         final String query = """
                 select *
                 from customers
                  """;
-        List<CustomersDao> customers = new ArrayList<>();
+        Set<CustomersDao> customers = new HashSet<>();
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);

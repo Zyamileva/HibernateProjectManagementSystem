@@ -22,6 +22,7 @@ public class DevelopersDto extends PersistentEntity {
         this.salary = salary;
     }
 
+
     public String getFirstName() {
         return firstName;
     }

@@ -1,5 +1,6 @@
 package service;
 
+import com.sun.source.doctree.SeeTree;
 import model.dao.DevelopersDao;
 import model.dao.ProjectsDao;
 import model.dto.DevelopersDto;
@@ -10,6 +11,7 @@ import service.converter.Converter;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ProjectsServiceImpl implements ProjectsService {
@@ -31,13 +33,20 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     @Override
+    public Set<ProjectsDto> findByName(String name) {
+        return projectsRepository.findByName(name)
+                .stream().map(element -> converterProjects.from(element)).collect(Collectors.toSet());
+    }
+
+    @Override
     public Optional<ProjectsDto> findById(int projectId) {
         return projectsRepository.findById(projectId).map(element -> converterProjects.from(element));
     }
 
     @Override
-    public List<ProjectsDto> findAll() {
-        return projectsRepository.findAll().stream().map(element -> converterProjects.from(element)).collect(Collectors.toList());
+    public Set<ProjectsDto> findAll() {
+        return projectsRepository.findAll().stream().map(element -> converterProjects.from(element))
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -83,7 +92,7 @@ public class ProjectsServiceImpl implements ProjectsService {
 
     @Override
     public boolean findByIdDeveloperIdProjects(int idDeveloper, int idProject) {
-      return projectsRepository.findByIdDeveloperIdProjects(idDeveloper, idProject);
+        return projectsRepository.findByIdDeveloperIdProjects(idDeveloper, idProject);
     }
 
     @Override

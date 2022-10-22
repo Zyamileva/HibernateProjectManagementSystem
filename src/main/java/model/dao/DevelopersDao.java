@@ -22,6 +22,7 @@ public class DevelopersDao extends PersistentEntity {
         this.salary = salary;
     }
 
+
     public String getFirstName() {
         return firstName;
     }

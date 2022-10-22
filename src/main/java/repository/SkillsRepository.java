@@ -1,12 +1,11 @@
 package repository;
 
+import model.dao.DevelopersDao;
 import model.dao.SkillsDao;
 import repository.resultSetMapper.SkillsMapper;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class SkillsRepository implements Repository<SkillsDao> {
     private final Connection connection;
@@ -51,6 +50,23 @@ public class SkillsRepository implements Repository<SkillsDao> {
     }
 
     @Override
+    public Set<SkillsDao> findByName(String name) {
+        final String FIND_BY_NAME = "SELECT * FROM skills WHERE name = ?";
+        Set<SkillsDao> skills = new HashSet<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME);
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                skills.add(skillsMapper.map(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return skills;
+    }
+
+    @Override
     public Optional<SkillsDao> findById(int id) {
         final String FIND_BY_ID = "SELECT * FROM skills WHERE id = ?";
         try {
@@ -67,12 +83,12 @@ public class SkillsRepository implements Repository<SkillsDao> {
     }
 
     @Override
-    public List<SkillsDao> findAll() {
+    public Set<SkillsDao> findAll() {
         final String query = """
                 select *
                 from skills
                  """;
-        List<SkillsDao> skills = new ArrayList<>();
+        Set<SkillsDao> skills = new HashSet<>();
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);

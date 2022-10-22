@@ -1,12 +1,11 @@
 package repository;
 
+import model.dao.CompaniesDao;
 import model.dao.DevelopersDao;
 import repository.resultSetMapper.DevelopersMapper;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class DevelopersRepository implements Repository<DevelopersDao> {
     private final Connection connection;
@@ -55,6 +54,23 @@ public class DevelopersRepository implements Repository<DevelopersDao> {
     }
 
     @Override
+    public Set<DevelopersDao> findByName(String name) {
+        final String FIND_BY_NAME = "SELECT * FROM developers WHERE last_name LIKE ?";
+        Set<DevelopersDao> developers = new HashSet<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME);
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                developers.add(developersMapper.map(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return developers;
+    }
+
+    @Override
     public Optional<DevelopersDao> findById(int id) {
         final String FIND_BY_ID = "SELECT * FROM developers WHERE id = ?";
         try {
@@ -71,12 +87,12 @@ public class DevelopersRepository implements Repository<DevelopersDao> {
     }
 
     @Override
-    public List<DevelopersDao> findAll() {
+    public Set<DevelopersDao> findAll() {
         final String query = """
                 select *
                 from developers
                  """;
-        List<DevelopersDao> developers = new ArrayList<>();
+        Set<DevelopersDao> developers = new HashSet<>();
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);

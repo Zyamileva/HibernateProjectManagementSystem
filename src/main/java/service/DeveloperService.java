@@ -5,14 +5,16 @@ import model.dto.DevelopersDto;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface DeveloperService {
 
     DevelopersDto saveDeveloper(DevelopersDto developer);
 
+    Set<DevelopersDto> findByName(String name);
     Optional<DevelopersDto> findById(int id);
 
-    List<DevelopersDto> findAll();
+    Set<DevelopersDto> findAll();
 
     void delete(DevelopersDto developers);
 
