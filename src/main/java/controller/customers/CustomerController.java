@@ -31,9 +31,14 @@ public class CustomerController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String customerName = req.getParameter("customerName");
-        Set<CustomersDto> customers = customersService.findByName(customerName);
-        req.setAttribute("customers", customers);
-        req.getRequestDispatcher("/WEB-INF/jsp/customer/findCustomer.jsp").forward(req, resp);
+        if (customersService.findByName(customerName).isPresent()) {
+            CustomersDto customers = customersService.findByName(customerName).get();
+            req.setAttribute("customers", customers);
+            req.getRequestDispatcher("/WEB-INF/jsp/customer/findCustomer.jsp").forward(req, resp);
+        } else {
+            req.setAttribute("message", "Customer not found");
+        }
+        req.getRequestDispatcher("/WEB-INF/jsp/project/findProject.jsp").forward(req, resp);
     }
 
     @Override

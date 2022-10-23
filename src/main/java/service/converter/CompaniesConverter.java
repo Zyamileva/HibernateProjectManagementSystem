@@ -1,9 +1,7 @@
 package service.converter;
 
 import model.dao.CompaniesDao;
-import model.dao.DevelopersDao;
 import model.dto.CompaniesDto;
-import model.dto.DevelopersDto;
 
 public class CompaniesConverter implements Converter<CompaniesDto, CompaniesDao> {
     @Override

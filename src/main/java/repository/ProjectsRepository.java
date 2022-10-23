@@ -125,20 +125,19 @@ public class ProjectsRepository implements Repository<ProjectsDao> {
     }
 
     @Override
-    public Set<ProjectsDao> findByName(String name) {
+    public Optional<ProjectsDao> findByName(String name) {
         final String FIND_BY_NAME = "SELECT * FROM projects WHERE name LIKE ?";
-        Set<ProjectsDao> projects = new HashSet<>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME);
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                projects.add(projectsMapper.map(resultSet));
+            if (resultSet.next()) {
+                return Optional.of(projectsMapper.map(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return projects;
+        return Optional.empty();
     }
 
     public boolean findByIdDeveloperIdProjects(int idDeveloper, int idProject) {

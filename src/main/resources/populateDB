@@ -71,7 +71,8 @@ create table developers_projects
    references developers,
    project_id int
    constraint developers_projects_project_id_fk
-   references projects
+   references projects,
+   UNIQUE(developer_id,project_id)
  );
 
 alter table developers_projects owner to postgres;

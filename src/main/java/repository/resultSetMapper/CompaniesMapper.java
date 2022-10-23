@@ -1,8 +1,6 @@
 package repository.resultSetMapper;
 
-import model.PersistentEntity;
 import model.dao.CompaniesDao;
-import model.dao.CustomersDao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

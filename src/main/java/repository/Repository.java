@@ -9,7 +9,7 @@ public interface Repository<T> {
 
     void delete(T entity);
 
-    Set<T> findByName(String name);
+    Optional<T> findByName(String name);
 
     Optional<T> findById(int id);
 

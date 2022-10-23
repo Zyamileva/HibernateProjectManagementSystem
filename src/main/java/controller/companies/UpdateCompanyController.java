@@ -34,13 +34,11 @@ public class UpdateCompanyController extends HttpServlet {
         if (!companiesService.findByName(companyName).isEmpty()) {
             String newName = req.getParameter("newCompanyName");
             int newStaff = Integer.parseInt(req.getParameter("newStaff"));
-            Set<CompaniesDto> byName = companiesService.findByName(companyName);
-            for (CompaniesDto company : byName) {
-                company.setName(newName);
-                company.setStaff(newStaff);
-                companiesService.update(company);
-                req.setAttribute("message", "Company: \"" + company.getName() + "\" updated");
-            }
+            CompaniesDto company = companiesService.findByName(companyName).get();
+            company.setName(newName);
+            company.setStaff(newStaff);
+            companiesService.update(company);
+            req.setAttribute("message", "Company: \"" + company.getName() + "\" updated");
         } else {
             req.setAttribute("message", "Company not found");
         }

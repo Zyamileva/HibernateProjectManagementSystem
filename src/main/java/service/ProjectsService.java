@@ -1,6 +1,5 @@
 package service;
 
-import model.dto.CustomersDto;
 import model.dto.DevelopersDto;
 import model.dto.ProjectsDto;
 
@@ -12,7 +11,7 @@ public interface ProjectsService {
 
     public ProjectsDto saveProject(ProjectsDto projectsDto);
 
-    Set<ProjectsDto> findByName(String name);
+    Optional<ProjectsDto> findByName(String name);
     Optional<ProjectsDto> findById(int id);
 
     Set<ProjectsDto> findAll();

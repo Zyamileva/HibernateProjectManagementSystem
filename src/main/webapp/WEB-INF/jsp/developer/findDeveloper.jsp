@@ -12,7 +12,8 @@
 <c:import url="${contextPath}/WEB-INF/jsp/navigation.jsp"/>
 <form action="/developers">
     <label style="margin: 15px" ; for="developerLastName"> Developer last name: </label><br>
-    <input style="border: 2px solid #39c; margin: 15px" ; type="text" id="developerLastName" name="developerLastName"><br>
+    <input style="border: 2px solid #39c; margin: 15px" ; type="text" id="developerLastName"
+           name="developerLastName"><br>
     <button style="margin: 15px" ; type="submit">Find</button>
 </form>
 <table table-layout:fixed; width:100%;>
@@ -47,6 +48,32 @@
             </td>
             <td style="text-align: center; width:100px;">
                 <c:out value="${developer.salary}"/>
+            </td>
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
+<br>
+<table table-layout:fixed; width:100%;>
+    <thead>
+    <c:if test="${not empty skills}">
+        <tr>
+            <td style="text-align: center; width:250px; font-weight: bold; margin: 15px">Skill name:</td>
+            <td style="text-align: center; width:250px; font-weight: bold; margin: 15px">Skill level:</td>
+        </tr>
+    </c:if>
+    <c:if test="${empty developers}">
+        <p><strong style="margin: 55px">There is not developers`s skills</strong></p>
+    </c:if>
+    </thead>
+    <tbody>
+    <c:forEach var="skill" items="${skills}">
+        <tr>
+            <td style="text-align: center; width:250px;">
+                <c:out value="${skill.name}"/>
+            </td>
+            <td style="text-align: center; width:250px;">
+                <c:out value="${skill.level}"/>
             </td>
         </tr>
     </c:forEach>

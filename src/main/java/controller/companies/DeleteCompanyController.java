@@ -50,11 +50,9 @@ public class DeleteCompanyController extends HttpServlet {
                 projectsService.deleteOfIdsProject(element.getId());
                 projectsService.delete(element);
             }
-            Set<CompaniesDto> byName = companiesService.findByName(companyName);
-            for (CompaniesDto company : byName) {
-                companiesService.delete(company);
-                req.setAttribute("message", "Company: \"" + company.getName() + "\" deleted");
-            }
+            CompaniesDto company = companiesService.findByName(companyName).get();
+            companiesService.delete(company);
+            req.setAttribute("message", "Company: \"" + company.getName() + "\" deleted");
         } else {
             req.setAttribute("message", "Company not found");
         }

@@ -1,15 +1,10 @@
 package service;
 
 import model.dao.CompaniesDao;
-import model.dao.CustomersDao;
 import model.dto.CompaniesDto;
-import model.dto.CustomersDto;
-import model.dto.DevelopersDto;
 import repository.CompaniesRepository;
-import repository.CustomersRepository;
 import service.converter.Converter;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,9 +25,8 @@ public class CompaniesServiceImpl implements CompaniesService {
     }
 
     @Override
-    public Set<CompaniesDto> findByName(String name) {
-        return companiesRepository.findByName(name).stream()
-                .map(element -> converterCompany.from(element)).collect(Collectors.toSet());
+    public Optional<CompaniesDto> findByName(String name) {
+        return companiesRepository.findByName(name).map(element -> converterCompany.from(element));
     }
 
     @Override

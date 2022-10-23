@@ -42,24 +42,16 @@ public class DeleteProjectController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String customerName = req.getParameter("customerName");
-
-        if (!customersService.findByName(customerName).isEmpty()) {
-            Set<ProjectsDto> projectsDtos = projectsService.findAll().stream()
-                    .filter(el -> customersService.findById(el.getCompanyId())
-                            .get().getName().equals(customerName)).collect(Collectors.toSet());
-            for (ProjectsDto element : projectsDtos) {
-                projectsService.deleteOfIdsProject(element.getId());
-                projectsService.delete(element);
-            }
-            Set<CustomersDto> byName = customersService.findByName(customerName);
-            for (CustomersDto customer : byName) {
-                customersService.delete(customer);
-                req.setAttribute("message", "Project: \"" + customer.getName() + "\" deleted");
-            }
-        } else {
-            req.setAttribute("message", "Project not found");
-        }
-        req.getRequestDispatcher("/WEB-INF/jsp/project/deletedProject.jsp").forward(req, resp);
+//        String projectName = req.getParameter("projectName");
+//        Set<ProjectsDto> byName = projectsService.findByName(projectName);
+//        if (!byName.isEmpty()) {
+//                projectsService.deleteOfIdsProject(byName.id);
+//                projectsService.delete(projectsService.findById(id).get());
+//                req.setAttribute("message", "Project: \"" + pr.getName() + "\" deleted");
+//            }
+//        } else {
+//            req.setAttribute("message", "Project not found");
+//        }
+//        req.getRequestDispatcher("/WEB-INF/jsp/project/deletedProject.jsp").forward(req, resp);
     }
 }

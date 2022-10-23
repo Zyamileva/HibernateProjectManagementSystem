@@ -1,6 +1,5 @@
 package repository;
 
-import model.dao.DevelopersDao;
 import model.dao.SkillsDao;
 import repository.resultSetMapper.SkillsMapper;
 
@@ -49,8 +48,7 @@ public class SkillsRepository implements Repository<SkillsDao> {
         }
     }
 
-    @Override
-    public Set<SkillsDao> findByName(String name) {
+    public Set<SkillsDao> findByNameSet(String name) {
         final String FIND_BY_NAME = "SELECT * FROM skills WHERE name = ?";
         Set<SkillsDao> skills = new HashSet<>();
         try {
@@ -64,6 +62,22 @@ public class SkillsRepository implements Repository<SkillsDao> {
             throw new RuntimeException(e);
         }
         return skills;
+    }
+
+    @Override
+    public Optional<SkillsDao> findByName(String name) {
+        final String FIND_BY_NAME = "SELECT * FROM skills WHERE name = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME);
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(skillsMapper.map(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.empty();
     }
 
     @Override

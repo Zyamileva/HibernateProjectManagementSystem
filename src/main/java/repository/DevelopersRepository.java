@@ -1,6 +1,5 @@
 package repository;
 
-import model.dao.CompaniesDao;
 import model.dao.DevelopersDao;
 import repository.resultSetMapper.DevelopersMapper;
 
@@ -54,20 +53,19 @@ public class DevelopersRepository implements Repository<DevelopersDao> {
     }
 
     @Override
-    public Set<DevelopersDao> findByName(String name) {
+    public Optional<DevelopersDao> findByName(String name) {
         final String FIND_BY_NAME = "SELECT * FROM developers WHERE last_name LIKE ?";
-        Set<DevelopersDao> developers = new HashSet<>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME);
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                developers.add(developersMapper.map(resultSet));
+            if (resultSet.next()) {
+                return Optional.of(developersMapper.map(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return developers;
+        return Optional.empty();
     }
 
     @Override
@@ -167,6 +165,26 @@ public class DevelopersRepository implements Repository<DevelopersDao> {
                 developers.add(developersMapper.map(resultSet));
             }
             return developers;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Integer> listSkillsOfDevelopers(int idDeveloper) {
+        final String query = """
+                select d.skill_id
+                from developers_skills as d
+                where d.developer_id = ?
+                """;
+        List<Integer> skills = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, idDeveloper);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                skills.add(resultSet.getInt(1));
+            }
+            return skills;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

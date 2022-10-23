@@ -1,6 +1,5 @@
 package service;
 
-import model.dto.CustomersDto;
 import model.dto.DevelopersDto;
 
 import java.util.List;
@@ -10,8 +9,8 @@ import java.util.Set;
 public interface DeveloperService {
 
     DevelopersDto saveDeveloper(DevelopersDto developer);
-
-    Set<DevelopersDto> findByName(String name);
+    public List<Integer> listSkillsOfDevelopers(int idDeveloper);
+    Optional<DevelopersDto> findByName(String name);
     Optional<DevelopersDto> findById(int id);
 
     Set<DevelopersDto> findAll();

@@ -1,11 +1,9 @@
 package service;
 
-import com.sun.source.doctree.SeeTree;
 import model.dao.DevelopersDao;
 import model.dao.ProjectsDao;
 import model.dto.DevelopersDto;
 import model.dto.ProjectsDto;
-import model.dto.SkillsDto;
 import repository.ProjectsRepository;
 import service.converter.Converter;
 
@@ -33,9 +31,8 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     @Override
-    public Set<ProjectsDto> findByName(String name) {
-        return projectsRepository.findByName(name)
-                .stream().map(element -> converterProjects.from(element)).collect(Collectors.toSet());
+    public Optional<ProjectsDto> findByName(String name) {
+        return projectsRepository.findByName(name).map(element -> converterProjects.from(element));
     }
 
     @Override

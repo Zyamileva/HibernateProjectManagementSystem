@@ -48,20 +48,19 @@ public class CompaniesRepository implements Repository<CompaniesDao> {
     }
 
     @Override
-    public Set<CompaniesDao> findByName(String name) {
+    public Optional<CompaniesDao> findByName(String name) {
         final String FIND_BY_NAME = "SELECT * FROM companies WHERE name LIKE ?";
-        Set<CompaniesDao> companies = new HashSet<>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME);
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                companies.add(companiesMapper.map(resultSet));
+            if (resultSet.next()) {
+                return Optional.of(companiesMapper.map(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return companies;
+        return Optional.empty();
     }
 
     @Override

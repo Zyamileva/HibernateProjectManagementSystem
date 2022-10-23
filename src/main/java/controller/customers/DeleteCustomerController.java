@@ -40,7 +40,6 @@ public class DeleteCustomerController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String customerName = req.getParameter("customerName");
-
         if (!customersService.findByName(customerName).isEmpty()) {
             Set<ProjectsDto> projectsDtos = projectsService.findAll().stream()
                     .filter(el -> customersService.findById(el.getCompanyId())
@@ -49,11 +48,9 @@ public class DeleteCustomerController extends HttpServlet {
                 projectsService.deleteOfIdsProject(element.getId());
                 projectsService.delete(element);
             }
-            Set<CustomersDto> byName = customersService.findByName(customerName);
-            for (CustomersDto customer : byName) {
-                customersService.delete(customer);
-                req.setAttribute("message", "Customer: \"" + customer.getName() + "\" deleted");
-            }
+            CustomersDto customer = customersService.findByName(customerName).get();
+            customersService.delete(customer);
+            req.setAttribute("message", "Customer: \"" + customer.getName() + "\" deleted");
         } else {
             req.setAttribute("message", "Customer not found");
         }

@@ -35,14 +35,12 @@ public class UpdateCustomerController extends HttpServlet {
             String newName = req.getParameter("newCustomerName");
             String newContact = req.getParameter("newContact");
             String newPhone = req.getParameter("newPhone");
-            Set<CustomersDto> byName = customersService.findByName(customerName);
-            for (CustomersDto customer : byName) {
-                customer.setName(newName);
-                customer.setContactPerson(newContact);
-                customer.setPhoneNumber(newPhone);
-                customersService.update(customer);
-                req.setAttribute("message", "Customer: \"" + customer.getName() + "\" updated");
-            }
+            CustomersDto customer = customersService.findByName(customerName).get();
+            customer.setName(newName);
+            customer.setContactPerson(newContact);
+            customer.setPhoneNumber(newPhone);
+            customersService.update(customer);
+            req.setAttribute("message", "Customer: \"" + customer.getName() + "\" updated");
         } else {
             req.setAttribute("message", "Customer not found");
         }

@@ -31,9 +31,14 @@ public class CompanyController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String companyName = req.getParameter("companyName");
-        Set<CompaniesDto> companies = companiesService.findByName(companyName);
-        req.setAttribute("companies", companies);
-        req.getRequestDispatcher("/WEB-INF/jsp/company/findCompany.jsp").forward(req, resp);
+        if (companiesService.findByName(companyName).isPresent()) {
+            CompaniesDto companies = companiesService.findByName(companyName).get();
+            req.setAttribute("companies", companies);
+            req.getRequestDispatcher("/WEB-INF/jsp/company/findCompany.jsp").forward(req, resp);
+        } else {
+            req.setAttribute("message", "Company not found");
+        }
+        req.getRequestDispatcher("/WEB-INF/jsp/project/findProject.jsp").forward(req, resp);
     }
 
     @Override

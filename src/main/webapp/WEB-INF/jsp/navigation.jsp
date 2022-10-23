@@ -29,10 +29,33 @@
                     class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="/developers/create/form">Create developer</a></li>
+                    <li><a href="/developers/create/skill/form">Add developer`s skill</a></li>
                     <li><a href="/developers/form">Find developer</a></li>
                     <li><a href="/developers/allDevelopers">Find all developers</a></li>
                     <li><a href="/developers/update/form">Update developer</a></li>
                     <li><a href="/developers/delete/form">Delete developer</a></li>
+                </ul>
+            </li>
+            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Projects<span
+                    class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/projects/create/form">Create project</a></li>
+                    <li><a href="/projects/create/developer/form">Add developers to the project </a></li>
+                    <li><a href="/projects/delete/developer/form">Delete of project developers</a></li>
+                    <li><a href="/projects/form">Find project</a></li>
+                    <li><a href="/projects/allProjects">Find all projects</a></li>
+                    <li><a href="/projects/update/form">Update project</a></li>
+                    <li><a href="/projects/delete/form">Delete project</a></li>
+                </ul>
+            </li>
+            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Skills<span
+                    class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/skills/create/form">Create skills</a></li>
+                    <li><a href="/skills/form">Find skill</a></li>
+                    <li><a href="/skills/allCustomers">Find all skills</a></li>
+                    <li><a href="/skills/update/form">Update skill name</a></li>
+                    <li><a href="/skills/delete/form">Delete skill</a></li>
                 </ul>
             </li>
         </ul>

@@ -1,8 +1,6 @@
 package service.converter;
 
-import model.dao.CompaniesDao;
 import model.dao.CustomersDao;
-import model.dto.CompaniesDto;
 import model.dto.CustomersDto;
 
 public class CustomersConverter implements Converter<CustomersDto, CustomersDao> {

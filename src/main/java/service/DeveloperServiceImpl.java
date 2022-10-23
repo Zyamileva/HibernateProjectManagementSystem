@@ -25,14 +25,18 @@ public class DeveloperServiceImpl implements DeveloperService {
     }
 
     @Override
-    public Set<DevelopersDto> findByName(String name) {
-        return developersRepository.findByName(name)
-                .stream().map(element -> converter.from(element)).collect(Collectors.toSet());
+    public Optional<DevelopersDto> findByName(String name) {
+        return developersRepository.findByName(name).map(element -> converter.from(element));
     }
 
     @Override
     public Optional<DevelopersDto> findById(int id) {
         return developersRepository.findById(id).map(element -> converter.from(element));
+    }
+
+    @Override
+    public List<Integer> listSkillsOfDevelopers(int idDeveloper) {
+        return developersRepository.listSkillsOfDevelopers(idDeveloper);
     }
 
     @Override

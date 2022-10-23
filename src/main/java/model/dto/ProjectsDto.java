@@ -16,7 +16,6 @@ public class ProjectsDto extends PersistentEntity {
     public ProjectsDto(String name, String task_difficulty, int customerId,
                        int companyId, int cost) {
         this.name = name;
-        this.datePosted = datePosted;
         this.task_difficulty = task_difficulty;
         this.customerId = customerId;
         this.companyId = companyId;

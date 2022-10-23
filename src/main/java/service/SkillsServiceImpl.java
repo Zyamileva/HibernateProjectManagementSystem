@@ -1,14 +1,10 @@
 package service;
 
-import model.dao.ProjectsDao;
 import model.dao.SkillsDao;
-import model.dto.DevelopersDto;
-import model.dto.ProjectsDto;
 import model.dto.SkillsDto;
 import repository.SkillsRepository;
 import service.converter.Converter;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,10 +24,13 @@ public class SkillsServiceImpl implements SkillsService {
     }
 
     @Override
-    public Set<SkillsDto> findByName(String name) {
-        return skillsRepository.findByName(name)
-                .stream().map(element -> converterSkills.from(element)).collect(Collectors.toSet());
-    }
+    public Optional<SkillsDto> findByName(String name) {
+        return skillsRepository.findByName(name).map(element -> converterSkills.from(element));}
+
+    @Override
+    public Set<SkillsDto> findByNameSet(String name) {
+        return skillsRepository.findByNameSet(name).stream()
+                .map(element -> converterSkills.from(element)).collect(Collectors.toSet());}
 
     @Override
     public Optional<SkillsDto> findById(int id) {

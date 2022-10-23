@@ -1,6 +1,5 @@
 package repository;
 
-import model.dao.CompaniesDao;
 import model.dao.CustomersDao;
 import repository.resultSetMapper.CustomerMapper;
 
@@ -50,20 +49,19 @@ public class CustomersRepository implements Repository<CustomersDao> {
     }
 
     @Override
-    public Set<CustomersDao> findByName(String name) {
+    public Optional<CustomersDao> findByName(String name) {
         final String FIND_BY_NAME = "SELECT * FROM customers WHERE name LIKE ?";
-        Set<CustomersDao> customers = new HashSet<>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME);
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                customers.add(customerMapper.map(resultSet));
+            if (resultSet.next()) {
+                return Optional.of(customerMapper.map(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return customers;
+        return Optional.empty();
     }
 
     @Override
