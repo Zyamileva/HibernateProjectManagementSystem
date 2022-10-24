@@ -25,6 +25,7 @@ import java.util.Set;
 public class CreateProjectFormController extends HttpServlet {
     private CompaniesService companiesService;
     private CustomersService customersService;
+
     @Override
     public void init() throws ServletException {
         Connection connector = DataBaseManagerConnector.getInstance().getConnector();

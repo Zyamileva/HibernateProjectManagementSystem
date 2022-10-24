@@ -29,19 +29,17 @@
     </c:if>
     </thead>
     <tbody>
-    <c:forEach var="customer" items="${customers}">
         <tr>
             <td style="text-align: center; width:250px;">
-                <c:out value="${customer.name}"/>
+                <c:out value="${customers.name}"/>
             </td>
             <td style="text-align: center; width:100px;">
-                <c:out value="${customer.contactPerson}"/>
+                <c:out value="${customers.contactPerson}"/>
             </td>
             <td style="text-align: center; width:100px;">
-                <c:out value="${customer.phoneNumber}"/>
+                <c:out value="${customers.phoneNumber}"/>
             </td>
         </tr>
-    </c:forEach>
     </tbody>
 </table>
 </body>

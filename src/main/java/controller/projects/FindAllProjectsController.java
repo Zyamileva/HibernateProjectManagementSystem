@@ -1,15 +1,10 @@
 package controller.projects;
 
 import config.DataBaseManagerConnector;
-import model.dto.CustomersDto;
 import model.dto.ProjectsDto;
-import repository.CustomersRepository;
 import repository.ProjectsRepository;
-import service.CustomersService;
-import service.CustomersServiceImpl;
 import service.ProjectsService;
 import service.ProjectsServiceImpl;
-import service.converter.CustomersConverter;
 import service.converter.DeveloperConverter;
 import service.converter.ProjectsConverter;
 
@@ -32,7 +27,7 @@ public class FindAllProjectsController extends HttpServlet {
         DeveloperConverter developerConverter = new DeveloperConverter();
         ProjectsConverter projectsConverter = new ProjectsConverter();
         ProjectsRepository projectsRepository = new ProjectsRepository(connector);
-        projectsService = new ProjectsServiceImpl(projectsRepository,developerConverter, projectsConverter);
+        projectsService = new ProjectsServiceImpl(projectsRepository, developerConverter, projectsConverter);
     }
 
     @Override

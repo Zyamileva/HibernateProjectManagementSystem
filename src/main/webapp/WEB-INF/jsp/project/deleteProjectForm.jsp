@@ -10,9 +10,9 @@
 </head>
 <body>
 <c:import url="${contextPath}/WEB-INF/jsp/navigation.jsp"/>
-<form action="/customers/delete" method="post">
-    <label style="margin: 15px"; for="customerName"; for="customerName"> Customer name: </label><br>
-    <input style="border: 2px solid #39c; margin: 15px"; style="border: 2px solid #39c; margin-block: 15px" ; type="text" id="customerName" name="customerName"><br>
+<form action="/projects/delete" method="post">
+    <label style="margin: 15px"; for="projectName"; for="projectName"> Project name: </label><br>
+    <input style="border: 2px solid #39c; margin: 15px"; style="border: 2px solid #39c; margin-block: 15px" ; type="text" id="projectName" name="projectName"><br>
     <button style="margin: 15px" ; type="submit">Delete</button>
 </form>
 </body>

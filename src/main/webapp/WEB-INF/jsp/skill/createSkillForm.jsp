@@ -14,7 +14,7 @@
     <label style="margin: 15px"; for="skillName"> Skill name: </label><br>
     <input style="border: 2px solid #39c; margin: 15px"; type="text" id="skillName" name="skillName"><br>
     <label style="margin: 15px"; for="level"> Level: </label><br>
-    <input style="border: 2px solid #39c; margin: 15px"; type="number" id="level" name="level"><br>
+    <input style="border: 2px solid #39c; margin: 15px"; type="text" id="level" name="level"><br>
     <button style="margin: 15px"; type="submit">Create skill</button>
 </form>
 </body>

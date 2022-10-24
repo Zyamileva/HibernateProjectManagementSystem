@@ -16,7 +16,7 @@
         <c:forEach items="${developers}" var="developer">
             <option  style="text-align: center; width:250px; margin: 15px"; value="${developer.id}">${developer.firstName}  ${developer.lastName}</option>
         </c:forEach>
-    </select>
+    </select><br>
     <label style="margin: 15px"> Search skill for add: </label><br>
     <select  style="text-align: center; width:250px; font-weight: bold; margin: 15px"; name="skills">
         <c:forEach items="${skills}" var="skill">

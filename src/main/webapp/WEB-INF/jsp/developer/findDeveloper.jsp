@@ -32,25 +32,23 @@
     </c:if>
     </thead>
     <tbody>
-    <c:forEach var="developer" items="${developers}">
         <tr>
             <td style="text-align: center; width:250px;">
-                <c:out value="${developer.firstName}"/>
+                <c:out value="${developers.firstName}"/>
             </td>
             <td style="text-align: center; width:250px;">
-                <c:out value="${developer.lastName}"/>
+                <c:out value="${developers.lastName}"/>
             </td>
             <td style="text-align: center; width:200px;">
-                <c:out value="${developer.email}"/>
+                <c:out value="${developers.email}"/>
             </td>
             <td style="text-align: center; width:200px;">
-                <c:out value="${developer.phoneNumber}"/>
+                <c:out value="${developers.phoneNumber}"/>
             </td>
             <td style="text-align: center; width:100px;">
-                <c:out value="${developer.salary}"/>
+                <c:out value="${developers.salary}"/>
             </td>
         </tr>
-    </c:forEach>
     </tbody>
 </table>
 <br>

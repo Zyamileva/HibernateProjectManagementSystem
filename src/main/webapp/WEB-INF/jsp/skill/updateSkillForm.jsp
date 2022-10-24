@@ -13,8 +13,8 @@
 <form action="/skills/update" method="post">
     <label style="margin: 15px"; for="skillName"> Skill name: </label><br>
     <input style="border: 2px solid #99c; margin: 15px"; type="text" id="skillName" name="skillName"><br>
-    <label style="margin: 15px"; for="newSkillName"> New Skill name: </label><br>
-    <input style="border: 2px solid #39c; margin: 15px"; type="text" id="newSkillName" name="newSkillName"><br>
+    <label style="margin: 15px"; for="newName"> New Skill name: </label><br>
+    <input style="border: 2px solid #39c; margin: 15px"; type="text" id="newName" name="newName"><br>
     <button style="margin: 15px" ; type="submit">Update skill name</button>
 </form>
 </body>

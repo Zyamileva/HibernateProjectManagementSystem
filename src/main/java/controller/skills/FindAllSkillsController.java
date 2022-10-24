@@ -1,15 +1,10 @@
 package controller.skills;
 
 import config.DataBaseManagerConnector;
-import model.dto.CompaniesDto;
 import model.dto.SkillsDto;
-import repository.CompaniesRepository;
 import repository.SkillsRepository;
-import service.CompaniesService;
-import service.CompaniesServiceImpl;
 import service.SkillsService;
 import service.SkillsServiceImpl;
-import service.converter.CompaniesConverter;
 import service.converter.SkillsConverter;
 
 import javax.servlet.ServletException;

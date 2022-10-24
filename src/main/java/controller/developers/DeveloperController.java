@@ -3,6 +3,7 @@ package controller.developers;
 import config.DataBaseManagerConnector;
 import model.dto.DevelopersDto;
 import model.dto.SkillsDto;
+import org.postgresql.util.PSQLException;
 import repository.DevelopersRepository;
 import repository.SkillsRepository;
 import service.DeveloperService;
@@ -20,9 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = "/developers")
 public class DeveloperController extends HttpServlet {
@@ -65,7 +63,12 @@ public class DeveloperController extends HttpServlet {
         int salary = Integer.parseInt(req.getParameter("salary"));
         DevelopersDto developersDto = new DevelopersDto(developerFirstName,
                 developerLastName, email, phoneNumber, salary);
-        developerService.saveDeveloper(developersDto);
-        req.getRequestDispatcher("/WEB-INF/jsp/developer/savedDeveloper.jsp").forward(req, resp);
+        try {
+            developerService.saveDeveloper(developersDto);
+            req.getRequestDispatcher("/WEB-INF/jsp/developer/savedDeveloper.jsp").forward(req, resp);
+        } catch (Exception e) {
+            req.setAttribute("message", "Such a phone/email is already in the database");
+            req.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(req, resp);
+        }
     }
 }

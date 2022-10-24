@@ -1,7 +1,7 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">My_company</a>
+            <a class="navbar-brand" href="/">My_company</a>
         </div>
         <ul class="nav navbar-nav">
             <li class="active"><a href="/">Home</a></li>
@@ -53,7 +53,7 @@
                 <ul class="dropdown-menu">
                     <li><a href="/skills/create/form">Create skills</a></li>
                     <li><a href="/skills/form">Find skill</a></li>
-                    <li><a href="/skills/allCustomers">Find all skills</a></li>
+                    <li><a href="/skills/allSkills">Find all skills</a></li>
                     <li><a href="/skills/update/form">Update skill name</a></li>
                     <li><a href="/skills/delete/form">Delete skill</a></li>
                 </ul>

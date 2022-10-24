@@ -1,15 +1,9 @@
 package controller.skills;
 
 import config.DataBaseManagerConnector;
-import model.dto.CompaniesDto;
 import model.dto.SkillsDto;
-import repository.CompaniesRepository;
 import repository.SkillsRepository;
-import service.CompaniesService;
-import service.CompaniesServiceImpl;
-import service.SkillsService;
 import service.SkillsServiceImpl;
-import service.converter.CompaniesConverter;
 import service.converter.SkillsConverter;
 
 import javax.servlet.ServletException;
@@ -35,7 +29,7 @@ public class UpdateSkillController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("Name");
+        String name = req.getParameter("skillName");
         if (!skillsService.findByNameSet(name).isEmpty()) {
             String newName = req.getParameter("newName");
             Set<SkillsDto> skills = skillsService.findByNameSet(name);
@@ -45,7 +39,10 @@ public class UpdateSkillController extends HttpServlet {
             }
             req.setAttribute("message", "Skill name updated");
         } else {
-            req.setAttribute("message", "Skill name not found");
+            req.setAttribute("message", "Skill" +
+                    "" +
+                    "" +
+                    " name not found");
         }
         req.getRequestDispatcher("/WEB-INF/jsp/skill/updatedSkill.jsp").forward(req, resp);
     }

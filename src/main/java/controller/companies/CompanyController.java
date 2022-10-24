@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.Set;
 
 @WebServlet(urlPatterns = "/companies")
 public class CompanyController extends HttpServlet {
@@ -34,11 +33,10 @@ public class CompanyController extends HttpServlet {
         if (companiesService.findByName(companyName).isPresent()) {
             CompaniesDto companies = companiesService.findByName(companyName).get();
             req.setAttribute("companies", companies);
-            req.getRequestDispatcher("/WEB-INF/jsp/company/findCompany.jsp").forward(req, resp);
         } else {
             req.setAttribute("message", "Company not found");
         }
-        req.getRequestDispatcher("/WEB-INF/jsp/project/findProject.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/jsp/company/findCompany.jsp").forward(req, resp);
     }
 
     @Override

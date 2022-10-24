@@ -1,17 +1,11 @@
 package controller.skills;
 
 import config.DataBaseManagerConnector;
-import model.dto.CompaniesDto;
-import model.dto.ProjectsDto;
 import model.dto.SkillsDto;
-import repository.CompaniesRepository;
 import repository.DevelopersRepository;
-import repository.ProjectsRepository;
 import repository.SkillsRepository;
 import service.*;
-import service.converter.CompaniesConverter;
 import service.converter.DeveloperConverter;
-import service.converter.ProjectsConverter;
 import service.converter.SkillsConverter;
 
 import javax.servlet.ServletException;
@@ -22,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = "/skills/delete")
 public class DeleteSkillController extends HttpServlet {
@@ -46,8 +39,9 @@ public class DeleteSkillController extends HttpServlet {
         if (skillsService.findByName(skillName).isPresent()) {
             Set<SkillsDto> byNameSet = skillsService.findByNameSet(skillName);
             for (SkillsDto skill : byNameSet) {
-            developerService.deleteDevelopersOfIdsSkill(skill.getId());
-            skillsService.delete(skill);}
+                developerService.deleteDevelopersOfIdsSkill(skill.getId());
+                skillsService.delete(skill);
+            }
             req.setAttribute("message", "Skill: \"" + skillName + "\" deleted");
         } else {
             req.setAttribute("message", "Skill not found");

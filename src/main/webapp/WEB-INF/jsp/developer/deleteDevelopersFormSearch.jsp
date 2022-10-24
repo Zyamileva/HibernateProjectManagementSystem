@@ -17,7 +17,7 @@
             <option  style="text-align: center; width:250px; margin: 15px"; value="${developer.id}">${developer.firstName}  ${developer.lastName}</option>
         </c:forEach>
     </select>
-    <button style="margin: 15px" ; type="submit">Search developer</button>
+    <button style="margin: 15px" ; type="submit">Delete developer</button>
 </form>
 </body>
 </html>

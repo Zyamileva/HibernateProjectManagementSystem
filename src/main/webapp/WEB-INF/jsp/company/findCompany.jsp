@@ -11,9 +11,9 @@
 <body>
 <c:import url="${contextPath}/WEB-INF/jsp/navigation.jsp"/>
 <form action="/companies">
-    <label style="margin: 15px"; for="companyName"> Company name: </label><br>
-    <input style="border: 2px solid #39c; margin: 15px"; type="text" id="companyName" name="companyName"><br>
-    <button style="margin: 15px"; type="submit">Find</button>
+    <label style="margin: 15px" ; for="companyName"> Company name: </label><br>
+    <input style="border: 2px solid #39c; margin: 15px" ; type="text" id="companyName" name="companyName"><br>
+    <button style="margin: 15px" ; type="submit">Find</button>
 </form>
 <table table-layout:fixed; width:100%;>
     <thead>
@@ -28,16 +28,14 @@
     </c:if>
     </thead>
     <tbody>
-    <c:forEach var="company" items="${companies}">
-        <tr>
-            <td style="text-align: center; width:250px;">
-                <c:out value="${company.name}"/>
-            </td>
-            <td style="text-align: center; width:100px;">
-                <c:out value="${company.staff}"/>
-            </td>
-        </tr>
-    </c:forEach>
+    <tr>
+        <td style="text-align: center; width:250px;">
+            <c:out value="${companies.name}"/>
+        </td>
+        <td style="text-align: center; width:100px;">
+            <c:out value="${companies.staff}"/>
+        </td>
+    </tr>
     </tbody>
 </table>
 </body>

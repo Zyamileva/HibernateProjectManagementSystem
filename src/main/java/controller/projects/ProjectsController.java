@@ -1,7 +1,6 @@
 package controller.projects;
 
 import config.DataBaseManagerConnector;
-import model.dto.CustomersDto;
 import model.dto.ProjectsDto;
 import repository.CompaniesRepository;
 import repository.CustomersRepository;
@@ -19,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.Set;
 
 @WebServlet(urlPatterns = "/projects")
 public class ProjectsController extends HttpServlet {

@@ -3,16 +3,11 @@ package controller.projects;
 import config.DataBaseManagerConnector;
 import model.dto.DevelopersDto;
 import model.dto.ProjectsDto;
-import model.dto.SkillsDto;
-import repository.CustomersRepository;
 import repository.DevelopersRepository;
 import repository.ProjectsRepository;
-import repository.SkillsRepository;
 import service.*;
-import service.converter.CustomersConverter;
 import service.converter.DeveloperConverter;
 import service.converter.ProjectsConverter;
-import service.converter.SkillsConverter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

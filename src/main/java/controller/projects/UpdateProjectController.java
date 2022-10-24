@@ -1,14 +1,9 @@
 package controller.projects;
 
 import config.DataBaseManagerConnector;
-import model.dto.CustomersDto;
 import model.dto.ProjectsDto;
-import repository.CompaniesRepository;
-import repository.CustomersRepository;
 import repository.ProjectsRepository;
 import service.*;
-import service.converter.CompaniesConverter;
-import service.converter.CustomersConverter;
 import service.converter.DeveloperConverter;
 import service.converter.ProjectsConverter;
 
@@ -19,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.Set;
 
 @WebServlet(urlPatterns = "/projects/update")
 public class UpdateProjectController extends HttpServlet {

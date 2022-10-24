@@ -1,15 +1,10 @@
 package controller.skills;
 
 import config.DataBaseManagerConnector;
-import model.dto.CompaniesDto;
 import model.dto.SkillsDto;
-import repository.CompaniesRepository;
 import repository.SkillsRepository;
-import service.CompaniesService;
-import service.CompaniesServiceImpl;
 import service.SkillsService;
 import service.SkillsServiceImpl;
-import service.converter.CompaniesConverter;
 import service.converter.SkillsConverter;
 
 import javax.servlet.ServletException;
@@ -19,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.Set;
 
 @WebServlet(urlPatterns = "/skills")
 public class SkillController extends HttpServlet {
@@ -35,9 +31,9 @@ public class SkillController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String skillName = req.getParameter("skillName");
-        if (skillsService.findByName(skillName).isPresent()) {
-            SkillsDto skill = skillsService.findByName(skillName).get();
-            req.setAttribute("skill", skill);
+        if (!skillsService.findByNameSet(skillName).isEmpty()) {
+            Set<SkillsDto> skills = skillsService.findByNameSet(skillName);
+            req.setAttribute("skills", skills);
         } else {
             req.setAttribute("message", "Skill not found");
         }
@@ -46,7 +42,7 @@ public class SkillController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
+        String name = req.getParameter("skillName");
         String level = req.getParameter("level");
         SkillsDto skillsDto = new SkillsDto(name, level);
         skillsService.saveSkill(skillsDto);
