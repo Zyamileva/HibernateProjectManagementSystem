@@ -41,6 +41,7 @@ public class DeveloperServiceImpl implements DeveloperService {
 
     @Override
     public Set<DevelopersDto> findAll() {
+        Set<DevelopersDao> all = developersRepository.findAll();
         return developersRepository.findAll().stream().map((element) -> converter.from(element))
                 .collect(Collectors.toSet());
     }

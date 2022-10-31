@@ -21,8 +21,6 @@
         <tr>
             <td style="text-align: center; width:250px; font-weight: bold; margin: 15px">Projects name:</td>
             <td style="text-align: center; width:100px; font-weight: bold; margin: 15px">Task difficulty:</td>
-            <td style="text-align: center; width:100px; font-weight: bold; margin: 15px">Company:</td>
-            <td style="text-align: center; width:100px; font-weight: bold; margin: 15px">Customer:</td>
             <td style="text-align: center; width:100px; font-weight: bold; margin: 15px">Cost:</td>
             <td style="text-align: center; width:250px; font-weight: bold; margin: 15px">Date create:</td>
         </tr>
@@ -38,12 +36,6 @@
             </td>
             <td style="text-align: center; width:100px;">
                 <c:out value="${projects.task_difficulty}"/>
-            </td>
-            <td style="text-align: center; width:100px;">
-                <c:out value="${companies}"/>
-            </td>
-            <td style="text-align: center; width:100px;">
-                <c:out value="${customers}"/>
             </td>
             <td style="text-align: center; width:100px;">
                 <c:out value="${projects.cost}"/>

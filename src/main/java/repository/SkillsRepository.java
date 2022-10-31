@@ -1,153 +1,117 @@
 package repository;
 
+import config.HibernateProvider;
 import model.dao.SkillsDao;
-import repository.resultSetMapper.SkillsMapper;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-import java.sql.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SkillsRepository implements Repository<SkillsDao> {
-    private final Connection connection;
-    private static final SkillsMapper skillsMapper = new SkillsMapper();
+    private final HibernateProvider manager;
 
-    public SkillsRepository(Connection connection) {
-        this.connection = connection;
+    public SkillsRepository(HibernateProvider manager) {
+        this.manager = manager;
     }
 
     @Override
     public SkillsDao save(SkillsDao entity) {
-        final String INSERT = "INSERT INTO skills(name, level)" +
-                " VALUES(?,?)";
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, entity.getName());
-            preparedStatement.setString(2, entity.getLevel());
-            preparedStatement.executeUpdate();
-            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                entity.setId(generatedKeys.getInt(1));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        try (Session session = manager.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.save(entity);
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return entity;
     }
 
     @Override
     public void delete(SkillsDao entity) {
-        final String query = """
-                delete from skills
-                where id = ?
-                """;
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, entity.getId());
-            preparedStatement.execute();
-        } catch (SQLException e) {
+        try (Session session = manager.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.delete(entity);
+            transaction.commit();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public Set<SkillsDao> findByNameSet(String name) {
-        final String FIND_BY_NAME = "SELECT * FROM skills WHERE name = ?";
-        Set<SkillsDao> skills = new HashSet<>();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME);
-            preparedStatement.setString(1, name);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                skills.add(skillsMapper.map(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return skills;
+//        final String FIND_BY_NAME = "SELECT * FROM skills WHERE name = ?";
+//        Set<SkillsDao> skills = new HashSet<>();
+//        try {
+//            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME);
+//            preparedStatement.setString(1, name);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            while (resultSet.next()) {
+//                skills.add(skillsMapper.map(resultSet));
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return skills;
+        return null;
     }
 
     @Override
     public Optional<SkillsDao> findByName(String name) {
-        final String FIND_BY_NAME = "SELECT * FROM skills WHERE name = ?";
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME);
-            preparedStatement.setString(1, name);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return Optional.of(skillsMapper.map(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        try (Session session = manager.openSession()) {
+            return Optional.ofNullable(session.createQuery("FROM SkillsDao as skills WHERE skills.name = :name",
+                            SkillsDao.class)
+                    .setParameter("name", name).getSingleResult());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return Optional.empty();
     }
 
     @Override
     public Optional<SkillsDao> findById(int id) {
-        final String FIND_BY_ID = "SELECT * FROM skills WHERE id = ?";
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return Optional.of(skillsMapper.map(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        try (Session session = manager.openSession()) {
+            return Optional.ofNullable(session.createQuery("FROM SkillsDao as skills WHERE skills.id = :id",
+                            SkillsDao.class)
+                    .setParameter("id", id).getSingleResult());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return Optional.empty();
     }
-
-    @Override
-    public Set<SkillsDao> findAll() {
-        final String query = """
-                select *
-                from skills
-                 """;
-        Set<SkillsDao> skills = new HashSet<>();
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
-                skills.add(skillsMapper.map(resultSet));
+        @Override
+        public Set<SkillsDao> findAll () {
+            try (final Session session = manager.openSession()) {
+                return session.createQuery("FROM SkillsDao as skills", SkillsDao.class)
+                        .stream().collect(Collectors.toSet());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return Collections.emptySet();
         }
-        return skills;
-    }
-
-    @Override
-    public void update(SkillsDao entity) {
-        final String query = """
-                update skills set
-                   name = ?,
-                   level = ?
-                   where id = ?
-                """;
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, entity.getName());
-            preparedStatement.setString(2, entity.getLevel());
-            preparedStatement.setInt(3, entity.getId());
-            preparedStatement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public int findByNameLevel(String name, String level) {
-        final String EXIST = "SELECT id FROM skills WHERE name = ? AND level = ? ";
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(EXIST);
-            preparedStatement.setString(1, name);
-            preparedStatement.setString(2, level);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt("id");
+        @Override
+        public void update (SkillsDao entity){
+            try (Session session = manager.openSession()) {
+                Transaction transaction = session.beginTransaction();
+                session.update(entity);
+                transaction.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
-        return 0;
+
+        public int findByNameLevel (String name, String level){
+//        final String EXIST = "SELECT id FROM skills WHERE name = ? AND level = ? ";
+//        try {
+//            PreparedStatement preparedStatement = connection.prepareStatement(EXIST);
+//            preparedStatement.setString(1, name);
+//            preparedStatement.setString(2, level);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            if (resultSet.next()) {
+//                return resultSet.getInt("id");
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+            return 0;
+        }
     }
-}

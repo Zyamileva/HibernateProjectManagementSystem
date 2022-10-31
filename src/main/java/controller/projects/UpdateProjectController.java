@@ -1,11 +1,13 @@
 package controller.projects;
 
-import config.DataBaseManagerConnector;
+import config.HibernateProvider;
+import model.dto.CompaniesDto;
 import model.dto.ProjectsDto;
+import repository.CompaniesRepository;
+import repository.CustomersRepository;
 import repository.ProjectsRepository;
 import service.*;
-import service.converter.DeveloperConverter;
-import service.converter.ProjectsConverter;
+import service.converter.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
 
 @WebServlet(urlPatterns = "/projects/update")
 public class UpdateProjectController extends HttpServlet {
@@ -23,10 +24,17 @@ public class UpdateProjectController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        Connection connector = DataBaseManagerConnector.getInstance().getConnector();
-        ProjectsConverter projectsConverter = new ProjectsConverter();
-        DeveloperConverter developerConverter = new DeveloperConverter();
-        ProjectsRepository projectsRepository = new ProjectsRepository(connector);
+        HibernateProvider dbProvider = new HibernateProvider();
+        SkillsConverter skillsConverter = new SkillsConverter();
+        CompaniesConverter companiesConverter = new CompaniesConverter(skillsConverter);
+        CustomersConverter customersConverter = new CustomersConverter(skillsConverter);
+        DeveloperConverter developerConverter = new DeveloperConverter(skillsConverter, companiesConverter, customersConverter);
+        ProjectsConverter projectsConverter = new ProjectsConverter(companiesConverter, customersConverter, developerConverter);
+        ProjectsRepository projectsRepository = new ProjectsRepository(dbProvider);
+        CompaniesRepository companiesRepository = new CompaniesRepository(dbProvider);
+        CustomersRepository customersRepository = new CustomersRepository(dbProvider);
+        companiesService = new CompaniesServiceImpl(companiesRepository, companiesConverter);
+        customersService = new CustomersServiceImpl(customersRepository, customersConverter);
         projectsService = new ProjectsServiceImpl(projectsRepository, developerConverter, projectsConverter);
     }
 
@@ -43,8 +51,9 @@ public class UpdateProjectController extends HttpServlet {
             project.setName(newName);
             project.setTask_difficulty(newTaskDifficulty);
             project.setCost(newCost);
-            project.setCompanyId(newCompanyId);
-            project.setCustomerId(newCustomerId);
+            CompaniesDto companiesDto = companiesService.findById(newCompanyId).get();
+            project.setCompanies(companiesService.findById(newCompanyId).get());
+            project.setCustomers(customersService.findById(newCustomerId).get());
             projectsService.update(project);
             req.setAttribute("message", "Project: \"" + project.getName() + "\" updated");
         } else {

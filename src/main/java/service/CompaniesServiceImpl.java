@@ -26,6 +26,7 @@ public class CompaniesServiceImpl implements CompaniesService {
 
     @Override
     public Optional<CompaniesDto> findByName(String name) {
+        Optional<CompaniesDao> byName = companiesRepository.findByName(name);
         return companiesRepository.findByName(name).map(element -> converterCompany.from(element));
     }
 
@@ -36,6 +37,8 @@ public class CompaniesServiceImpl implements CompaniesService {
 
     @Override
     public Set<CompaniesDto> findAll() {
+        Set<CompaniesDao> all = companiesRepository.findAll();
+        System.out.println(all);
         return companiesRepository.findAll().stream().map(element -> converterCompany.from(element))
                 .collect(Collectors.toSet());
     }

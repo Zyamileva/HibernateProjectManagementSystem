@@ -1,6 +1,7 @@
 package controller.skills;
 
-import config.DataBaseManagerConnector;
+
+import config.HibernateProvider;
 import model.dto.SkillsDto;
 import repository.SkillsRepository;
 import service.SkillsService;
@@ -22,9 +23,9 @@ public class FindAllSkillsController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        Connection connector = DataBaseManagerConnector.getInstance().getConnector();
+        HibernateProvider dbProvider = new HibernateProvider();
         SkillsConverter skillsConverter = new SkillsConverter();
-        SkillsRepository skillsRepository = new SkillsRepository(connector);
+        SkillsRepository skillsRepository = new SkillsRepository(dbProvider);
         skillsService = new SkillsServiceImpl(skillsRepository, skillsConverter);
     }
 

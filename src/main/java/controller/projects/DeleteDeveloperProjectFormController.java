@@ -1,6 +1,6 @@
 package controller.projects;
 
-import config.DataBaseManagerConnector;
+import config.HibernateProvider;
 import model.dto.DevelopersDto;
 import model.dto.ProjectsDto;
 import repository.DevelopersRepository;
@@ -9,8 +9,7 @@ import service.DeveloperService;
 import service.DeveloperServiceImpl;
 import service.ProjectsService;
 import service.ProjectsServiceImpl;
-import service.converter.DeveloperConverter;
-import service.converter.ProjectsConverter;
+import service.converter.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -30,12 +28,15 @@ public class DeleteDeveloperProjectFormController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        Connection connector = DataBaseManagerConnector.getInstance().getConnector();
-        DeveloperConverter developerConverter = new DeveloperConverter();
-        DevelopersRepository developersRepository = new DevelopersRepository(connector);
+        HibernateProvider dbProvider = new HibernateProvider();
+        SkillsConverter skillsConverter = new SkillsConverter();
+        CompaniesConverter companiesConverter = new CompaniesConverter(skillsConverter);
+        CustomersConverter customersConverter = new CustomersConverter(skillsConverter);
+        DeveloperConverter developerConverter = new DeveloperConverter(skillsConverter, companiesConverter, customersConverter);
+        DevelopersRepository developersRepository = new DevelopersRepository(dbProvider);
         developerService = new DeveloperServiceImpl(developersRepository, developerConverter);
-        ProjectsConverter projectsConverter = new ProjectsConverter();
-        ProjectsRepository projectsRepository = new ProjectsRepository(connector);
+        ProjectsConverter projectsConverter = new ProjectsConverter(companiesConverter, customersConverter, developerConverter);
+        ProjectsRepository projectsRepository = new ProjectsRepository(dbProvider);
         projectsService = new ProjectsServiceImpl(projectsRepository, developerConverter, projectsConverter);
     }
 

@@ -1,15 +1,16 @@
 package controller.developers;
 
-import config.DataBaseManagerConnector;
+import config.HibernateProvider;
 import model.dto.DevelopersDto;
 import model.dto.SkillsDto;
-import org.postgresql.util.PSQLException;
 import repository.DevelopersRepository;
 import repository.SkillsRepository;
 import service.DeveloperService;
 import service.DeveloperServiceImpl;
 import service.SkillsService;
 import service.SkillsServiceImpl;
+import service.converter.CompaniesConverter;
+import service.converter.CustomersConverter;
 import service.converter.DeveloperConverter;
 import service.converter.SkillsConverter;
 
@@ -19,7 +20,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
 import java.util.List;
 
 @WebServlet(urlPatterns = "/developers")
@@ -29,12 +29,14 @@ public class DeveloperController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        Connection connector = DataBaseManagerConnector.getInstance().getConnector();
-        DeveloperConverter developerConverter = new DeveloperConverter();
-        DevelopersRepository developersRepository = new DevelopersRepository(connector);
-        developerService = new DeveloperServiceImpl(developersRepository, developerConverter);
+        HibernateProvider dbProvider = new HibernateProvider();
         SkillsConverter skillsConverter = new SkillsConverter();
-        SkillsRepository skillsRepository = new SkillsRepository(connector);
+        CompaniesConverter companiesConverter = new CompaniesConverter(skillsConverter);
+        CustomersConverter customersConverter = new CustomersConverter(skillsConverter);
+        DeveloperConverter developerConverter = new DeveloperConverter(skillsConverter,companiesConverter,customersConverter);
+        DevelopersRepository developersRepository = new DevelopersRepository(dbProvider);
+        developerService = new DeveloperServiceImpl(developersRepository, developerConverter);
+        SkillsRepository skillsRepository = new SkillsRepository(dbProvider);
         skillsService = new SkillsServiceImpl(skillsRepository, skillsConverter);
     }
 

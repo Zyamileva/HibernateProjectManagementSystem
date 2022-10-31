@@ -1,33 +1,28 @@
 package repository;
 
+import config.HibernateProvider;
 import model.dao.CustomersDao;
-import repository.resultSetMapper.CustomerMapper;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-import java.sql.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CustomersRepository implements Repository<CustomersDao> {
-    private final Connection connection;
-    private CustomerMapper customerMapper = new CustomerMapper();
 
-    public CustomersRepository(Connection connection) {
-        this.connection = connection;
+    private final HibernateProvider manager;
+
+    public CustomersRepository(HibernateProvider manager) {
+        this.manager = manager;
     }
 
     @Override
     public CustomersDao save(CustomersDao entity) {
-        final String INSERT = "INSERT INTO customers (name, contact_person, phone) VALUES(?,?,?)";
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, entity.getName());
-            preparedStatement.setString(2, entity.getContactPerson());
-            preparedStatement.setString(3, entity.getPhoneNumber());
-            preparedStatement.executeUpdate();
-            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                entity.setId(generatedKeys.getInt(1));
-            }
-        } catch (SQLException e) {
+        try (Session session = manager.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.save(entity);
+            transaction.commit();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return entity;
@@ -35,47 +30,35 @@ public class CustomersRepository implements Repository<CustomersDao> {
 
     @Override
     public void delete(CustomersDao entity) {
-        final String query = """
-                delete from customers
-                where id = ?
-                """;
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, entity.getId());
-            preparedStatement.execute();
-        } catch (SQLException e) {
+        try (Session session = manager.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.delete(entity);
+            transaction.commit();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
     public Optional<CustomersDao> findByName(String name) {
-        final String FIND_BY_NAME = "SELECT * FROM customers WHERE name LIKE ?";
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME);
-            preparedStatement.setString(1, name);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return Optional.of(customerMapper.map(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        try (Session session = manager.openSession()) {
+            return Optional.ofNullable(session.createQuery("FROM CustomersDao as customers WHERE customers.name = :name",
+                            CustomersDao.class)
+                    .setParameter("name", name).getSingleResult());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return Optional.empty();
     }
 
     @Override
     public Optional<CustomersDao> findById(int id) {
-        final String FIND_BY_ID = "SELECT * FROM customers WHERE id = ?";
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return Optional.of(customerMapper.map(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        try (Session session = manager.openSession()) {
+            return Optional.ofNullable(session.createQuery("FROM CustomersDao as customers WHERE customers.id = :id",
+                            CustomersDao.class)
+                    .setParameter("id", id).getSingleResult());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return Optional.empty();
     }
@@ -83,40 +66,22 @@ public class CustomersRepository implements Repository<CustomersDao> {
 
     @Override
     public Set<CustomersDao> findAll() {
-        final String query = """
-                select *
-                from customers
-                 """;
-        Set<CustomersDao> customers = new HashSet<>();
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
-                customers.add(customerMapper.map(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        try (final Session session = manager.openSession()) {
+            return session.createQuery("SELECT customers FROM CustomersDao as customers", CustomersDao.class)
+                    .stream().collect(Collectors.toSet());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return customers;
+        return Collections.emptySet();
     }
 
     @Override
     public void update(CustomersDao entity) {
-        final String query = """
-                update customers set
-                name = ?, 
-                contact_person = ?,
-                phone = ?
-                where id = ?
-                """;
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, entity.getName());
-            preparedStatement.setString(2, entity.getContactPerson());
-            preparedStatement.setString(3, entity.getPhoneNumber());
-            preparedStatement.setInt(4, entity.getId());
-            preparedStatement.execute();
-        } catch (SQLException e) {
+        try (Session session = manager.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.update(entity);
+            transaction.commit();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

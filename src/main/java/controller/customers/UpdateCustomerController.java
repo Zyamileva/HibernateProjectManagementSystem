@@ -1,11 +1,12 @@
 package controller.customers;
 
-import config.DataBaseManagerConnector;
+import config.HibernateProvider;
 import model.dto.CustomersDto;
 import repository.CustomersRepository;
 import service.CustomersService;
 import service.CustomersServiceImpl;
 import service.converter.CustomersConverter;
+import service.converter.SkillsConverter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
 
 @WebServlet(urlPatterns = "/customers/update")
 public class UpdateCustomerController extends HttpServlet {
@@ -21,16 +21,17 @@ public class UpdateCustomerController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        Connection connector = DataBaseManagerConnector.getInstance().getConnector();
-        CustomersConverter customersConverter = new CustomersConverter();
-        CustomersRepository customersRepository = new CustomersRepository(connector);
+        HibernateProvider dbProvider = new HibernateProvider();
+        SkillsConverter skillsConverter = new SkillsConverter();
+        CustomersConverter customersConverter = new CustomersConverter(skillsConverter);
+        CustomersRepository customersRepository = new CustomersRepository(dbProvider);
         customersService = new CustomersServiceImpl(customersRepository, customersConverter);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String customerName = req.getParameter("customerName");
-        if (!customersService.findByName(customerName).isEmpty()) {
+        if (customersService.findByName(customerName).isPresent()) {
             String newName = req.getParameter("newCustomerName");
             String newContact = req.getParameter("newContact");
             String newPhone = req.getParameter("newPhone");

@@ -1,31 +1,45 @@
 package model.dao;
 
-import model.PersistentEntity;
+import lombok.Data;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-public class ProjectsDao extends PersistentEntity {
+@Table(name = "projects")
+@Entity
+public class ProjectsDao {
+
+    private int id;
+
     private String name;
+
     private LocalDateTime datePosted;
+
     private String task_difficulty;
-    private int customerId;
-    private int companyId;
+
     private int cost;
 
-    public ProjectsDao(String name, LocalDateTime datePosted, String task_difficulty, int customerId,
-                       int companyId, int cost) {
-        this.name = name;
-        this.datePosted = datePosted;
-        this.task_difficulty = task_difficulty;
-        this.customerId = customerId;
-        this.companyId = companyId;
-        this.cost = cost;
+    private CompaniesDao companies;
+
+    private CustomersDao customers;
+
+    private Set<DevelopersDao> developers=new HashSet<>();
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public int getId() {
+        return id;
     }
 
-    public ProjectsDao() {
+    public void setId(int id) {
+        this.id = id;
     }
 
+    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -34,6 +48,7 @@ public class ProjectsDao extends PersistentEntity {
         this.name = name;
     }
 
+    @Column(name = "date_create")
     public LocalDateTime getDatePosted() {
         return datePosted;
     }
@@ -42,6 +57,7 @@ public class ProjectsDao extends PersistentEntity {
         this.datePosted = datePosted;
     }
 
+    @Column(name = "task_difficulty")
     public String getTask_difficulty() {
         return task_difficulty;
     }
@@ -50,22 +66,7 @@ public class ProjectsDao extends PersistentEntity {
         this.task_difficulty = task_difficulty;
     }
 
-    public int getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
-
-    public int getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(int companyId) {
-        this.companyId = companyId;
-    }
-
+    @Column(name = "cost")
     public int getCost() {
         return cost;
     }
@@ -74,30 +75,97 @@ public class ProjectsDao extends PersistentEntity {
         this.cost = cost;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        ProjectsDao that = (ProjectsDao) o;
-        return customerId == that.customerId && companyId == that.companyId && cost == that.cost && name.equals(that.name) && datePosted.equals(that.datePosted) && task_difficulty.equals(that.task_difficulty);
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    public CompaniesDao getCompanies() {
+        return companies;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), name, datePosted, task_difficulty, customerId, companyId, cost);
+    public void setCompanies(CompaniesDao companies) {
+        this.companies = companies;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    public CustomersDao getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(CustomersDao customers) {
+        this.customers = customers;
+    }
+
+    @ManyToMany(mappedBy = "projects")
+    public Set<DevelopersDao> getDevelopers() {
+        return developers;
+    }
+
+    public void setDevelopers(Set<DevelopersDao> developers) {
+        this.developers = developers;
+    }
+
+    public ProjectsDao(int id, String name, LocalDateTime datePosted, String task_difficulty, int cost,
+                       CompaniesDao companies, CustomersDao customers) {
+        this.id = id;
+        this.name = name;
+        this.datePosted = datePosted;
+        this.task_difficulty = task_difficulty;
+        this.cost = cost;
+        this.companies = companies;
+        this.customers = customers;
+    }
+
+    public ProjectsDao(int id, String name, LocalDateTime datePosted, String task_difficulty, int cost,
+                       CompaniesDao companies, CustomersDao customers, Set<DevelopersDao> developers) {
+        this.id = id;
+        this.name = name;
+        this.datePosted = datePosted;
+        this.task_difficulty = task_difficulty;
+        this.cost = cost;
+        this.companies = companies;
+        this.customers = customers;
+        this.developers = developers;
+    }
+
+    public ProjectsDao(String name, LocalDateTime datePosted, String task_difficulty, int cost) {
+        this.name = name;
+        this.datePosted = datePosted;
+        this.task_difficulty = task_difficulty;
+        this.cost = cost;
+    }
+
+    public ProjectsDao(int id, String name, LocalDateTime datePosted, String task_difficulty, int cost) {
+        this.id = id;
+        this.name = name;
+        this.datePosted = datePosted;
+        this.task_difficulty = task_difficulty;
+        this.cost = cost;
+    }
+
+    public ProjectsDao() {
+    }
+//
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        ProjectsDao that = (ProjectsDao) o;
+//        return id == that.id && cost == that.cost && name.equals(that.name) && Objects.equals(datePosted, that.datePosted) && task_difficulty.equals(that.task_difficulty) && companies.equals(that.companies) && customers.equals(that.customers);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(id, name, datePosted, task_difficulty, cost, companies, customers);
+//    }
 
     @Override
     public String toString() {
         return "ProjectsDao{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", datePosted=" + datePosted +
                 ", task_difficulty='" + task_difficulty + '\'' +
-                ", customerId=" + customerId +
-                ", companyId=" + companyId +
                 ", cost=" + cost +
-                ", id=" + id +
                 '}';
     }
 }

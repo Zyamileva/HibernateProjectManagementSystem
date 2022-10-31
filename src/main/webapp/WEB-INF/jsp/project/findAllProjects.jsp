@@ -21,7 +21,7 @@
         </tr>
     </c:if>
     <c:if test="${empty projects}">
-        <p>There is not customers</p>
+        <p>There is not projects</p>
     </c:if>
     </thead>
     <tbody>

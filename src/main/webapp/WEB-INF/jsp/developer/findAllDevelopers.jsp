@@ -22,7 +22,7 @@
         </tr>
     </c:if>
     <c:if test="${empty developers}">
-        <p>There is not customers</p>
+        <p>There is not developers</p>
     </c:if>
     </thead>
     <tbody>

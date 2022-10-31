@@ -1,15 +1,27 @@
 package model.dto;
 
-import model.PersistentEntity;
+import lombok.Data;
 
 import java.util.Objects;
+import java.util.Set;
 
-public class CustomersDto extends PersistentEntity {
+@Data
+public class CustomersDto {
+    private int id;
     private String name;
     private String contactPerson;
     private String phoneNumber;
+    private Set<ProjectsDto> projects;
 
     public CustomersDto() {
+    }
+
+    public CustomersDto(int id, String name, String contactPerson, String phoneNumber, Set<ProjectsDto> projects) {
+        this.id = id;
+        this.name = name;
+        this.contactPerson = contactPerson;
+        this.phoneNumber = phoneNumber;
+        this.projects = projects;
     }
 
     public CustomersDto(String name, String contactPerson, String phoneNumber) {
@@ -18,51 +30,16 @@ public class CustomersDto extends PersistentEntity {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getContactPerson() {
-        return contactPerson;
-    }
-
-    public void setContactPerson(String contactPerson) {
-        this.contactPerson = contactPerson;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         CustomersDto that = (CustomersDto) o;
-        return Objects.equals(name, that.name) && Objects.equals(contactPerson, that.contactPerson) && Objects.equals(phoneNumber, that.phoneNumber);
+        return id == that.id && name.equals(that.name) && contactPerson.equals(that.contactPerson) && phoneNumber.equals(that.phoneNumber) && Objects.equals(projects, that.projects);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, contactPerson, phoneNumber);
-    }
-
-    @Override
-    public String toString() {
-        return "Customers {" +
-                "name='" + name + '\'' +
-                ", contactPerson='" + contactPerson + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", id=" + id +
-                '}';
+        return Objects.hash(id, name, contactPerson, phoneNumber, projects);
     }
 }

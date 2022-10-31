@@ -1,10 +1,12 @@
 package model.dto;
 
-import model.PersistentEntity;
+import lombok.Data;
 
 import java.util.Objects;
 
-public class SkillsDto extends PersistentEntity {
+@Data
+public class SkillsDto {
+    private int id;
     private String name;
     private String level;
 
@@ -16,41 +18,16 @@ public class SkillsDto extends PersistentEntity {
         this.level = level;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SkillsDto skillsDao)) return false;
-        if (!super.equals(o)) return false;
-        return name.equals(skillsDao.name) && level.equals(skillsDao.level);
+        if (o == null || getClass() != o.getClass()) return false;
+        SkillsDto skillsDto = (SkillsDto) o;
+        return id == skillsDto.id && name.equals(skillsDto.name) && level.equals(skillsDto.level);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, level);
-    }
-
-    @Override
-    public String toString() {
-        return "Skills {" +
-                "name='" + name + '\'' +
-                ", level='" + level + '\'' +
-                ", id=" + id +
-                '}';
+        return Objects.hash(id, name, level);
     }
 }

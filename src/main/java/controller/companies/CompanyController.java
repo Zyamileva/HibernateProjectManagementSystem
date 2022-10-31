@@ -1,11 +1,11 @@
 package controller.companies;
 
-import config.DataBaseManagerConnector;
+import config.HibernateProvider;
 import model.dto.CompaniesDto;
 import repository.CompaniesRepository;
 import service.CompaniesService;
 import service.CompaniesServiceImpl;
-import service.converter.CompaniesConverter;
+import service.converter.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
 
 @WebServlet(urlPatterns = "/companies")
 public class CompanyController extends HttpServlet {
@@ -21,9 +20,10 @@ public class CompanyController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        Connection connector = DataBaseManagerConnector.getInstance().getConnector();
-        CompaniesConverter companiesConverter = new CompaniesConverter();
-        CompaniesRepository companiesRepository = new CompaniesRepository(connector);
+        HibernateProvider dbProvider = new HibernateProvider();
+        SkillsConverter skillConverter=new SkillsConverter();
+        CompaniesConverter companiesConverter = new CompaniesConverter(skillConverter);
+        CompaniesRepository companiesRepository = new CompaniesRepository(dbProvider);
         companiesService = new CompaniesServiceImpl(companiesRepository, companiesConverter);
     }
 

@@ -1,12 +1,16 @@
 package model.dto;
 
-import model.PersistentEntity;
+import lombok.Data;
 
 import java.util.Objects;
+import java.util.Set;
 
-public class CompaniesDto extends PersistentEntity {
+@Data
+public class CompaniesDto {
+    private int id;
     private String name;
     private int staff;
+    private Set<ProjectsDto> projects;
 
     public CompaniesDto() {
     }
@@ -16,41 +20,23 @@ public class CompaniesDto extends PersistentEntity {
         this.staff = staff;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    public CompaniesDto(int id, String name, int staff, Set<ProjectsDto> projects) {
+        this.id = id;
         this.name = name;
-    }
-
-    public int getStaff() {
-        return staff;
-    }
-
-    public void setStaff(int staff) {
         this.staff = staff;
+        this.projects = projects;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CompaniesDto companiesDao)) return false;
-        if (!super.equals(o)) return false;
-        return staff == companiesDao.staff && name.equals(companiesDao.name);
+        if (o == null || getClass() != o.getClass()) return false;
+        CompaniesDto that = (CompaniesDto) o;
+        return id == that.id && staff == that.staff && name.equals(that.name) && Objects.equals(projects, that.projects);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, staff);
-    }
-
-    @Override
-    public String toString() {
-        return "Companies {" +
-                "name='" + name + '\'' +
-                ", staff=" + staff +
-                ", id=" + id +
-                '}';
+        return Objects.hash(id, name, staff, projects);
     }
 }

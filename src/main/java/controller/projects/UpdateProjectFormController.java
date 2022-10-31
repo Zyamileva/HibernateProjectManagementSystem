@@ -1,6 +1,6 @@
 package controller.projects;
 
-import config.DataBaseManagerConnector;
+import config.HibernateProvider;
 import model.dto.CompaniesDto;
 import model.dto.CustomersDto;
 import repository.CompaniesRepository;
@@ -9,8 +9,7 @@ import service.CompaniesService;
 import service.CompaniesServiceImpl;
 import service.CustomersService;
 import service.CustomersServiceImpl;
-import service.converter.CompaniesConverter;
-import service.converter.CustomersConverter;
+import service.converter.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
 import java.util.Set;
 
 @WebServlet(urlPatterns = "/projects/update/form")
@@ -28,13 +26,13 @@ public class UpdateProjectFormController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-
-        Connection connector = DataBaseManagerConnector.getInstance().getConnector();
-        CompaniesConverter companiesConverter = new CompaniesConverter();
-        CompaniesRepository companiesRepository = new CompaniesRepository(connector);
+        HibernateProvider dbProvider = new HibernateProvider();
+        SkillsConverter skillsConverter = new SkillsConverter();
+        CompaniesConverter companiesConverter = new CompaniesConverter(skillsConverter);
+        CustomersConverter customersConverter = new CustomersConverter(skillsConverter);
+        CompaniesRepository companiesRepository = new CompaniesRepository(dbProvider);
         companiesService = new CompaniesServiceImpl(companiesRepository, companiesConverter);
-        CustomersConverter customersConverter = new CustomersConverter();
-        CustomersRepository customersRepository = new CustomersRepository(connector);
+        CustomersRepository customersRepository = new CustomersRepository(dbProvider);
         customersService = new CustomersServiceImpl(customersRepository, customersConverter);
     }
 

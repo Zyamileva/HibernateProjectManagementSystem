@@ -1,9 +1,24 @@
 package service.converter;
 
+import model.dao.DevelopersDao;
 import model.dao.ProjectsDao;
+import model.dto.DevelopersDto;
 import model.dto.ProjectsDto;
 
+import java.util.stream.Collectors;
+
 public class ProjectsConverter implements Converter<ProjectsDto, ProjectsDao> {
+    CompaniesConverter companiesConverter;
+    CustomersConverter customersConverter;
+    DeveloperConverter developerConverter;
+
+    public ProjectsConverter(CompaniesConverter companiesConverter, CustomersConverter customersConverter,
+                             DeveloperConverter developerConverter) {
+        this.companiesConverter = companiesConverter;
+        this.customersConverter = customersConverter;
+        this.developerConverter = developerConverter;
+    }
+
     @Override
     public ProjectsDto from(ProjectsDao entity) {
         ProjectsDto projectsDto = new ProjectsDto();
@@ -11,9 +26,13 @@ public class ProjectsConverter implements Converter<ProjectsDto, ProjectsDao> {
         projectsDto.setName(entity.getName());
         projectsDto.setDatePosted(entity.getDatePosted());
         projectsDto.setTask_difficulty(entity.getTask_difficulty());
-        projectsDto.setCompanyId(entity.getCompanyId());
-        projectsDto.setCustomerId(entity.getCustomerId());
         projectsDto.setCost(entity.getCost());
+        if (entity.getCompanies() != null) {
+            projectsDto.setCompanies(companiesConverter.from(entity.getCompanies()));
+        }
+        if (entity.getCustomers() != null) {
+            projectsDto.setCustomers(customersConverter.from(entity.getCustomers()));
+        }
         return projectsDto;
     }
 
@@ -24,9 +43,13 @@ public class ProjectsConverter implements Converter<ProjectsDto, ProjectsDao> {
         projectsDao.setDatePosted(entity.getDatePosted());
         projectsDao.setName(entity.getName());
         projectsDao.setTask_difficulty(entity.getTask_difficulty());
-        projectsDao.setCompanyId(entity.getCompanyId());
-        projectsDao.setCustomerId(entity.getCustomerId());
         projectsDao.setCost(entity.getCost());
+        if (entity.getCompanies() != null) {
+            projectsDao.setCompanies(companiesConverter.to(entity.getCompanies()));
+        }
+        if (entity.getCustomers() != null) {
+            projectsDao.setCustomers(customersConverter.to(entity.getCustomers()));
+        }
         return projectsDao;
     }
 }

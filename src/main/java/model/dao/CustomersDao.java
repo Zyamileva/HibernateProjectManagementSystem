@@ -1,23 +1,37 @@
 package model.dao;
 
-import model.PersistentEntity;
+import lombok.Data;
 
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-public class CustomersDao extends PersistentEntity {
+@Table(name = "customers")
+@Entity
+public class CustomersDao {
+
+    private int id;
+
     private String name;
+
     private String contactPerson;
+
     private String phoneNumber;
 
-    public CustomersDao() {
+    private Set<ProjectsDao> projects=new HashSet<>();
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public int getId() {
+        return id;
     }
 
-    public CustomersDao(String name, String contactPerson, String phoneNumber) {
-        this.name = name;
-        this.contactPerson = contactPerson;
-        this.phoneNumber = phoneNumber;
+    public void setId(int id) {
+        this.id = id;
     }
 
+    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -26,6 +40,7 @@ public class CustomersDao extends PersistentEntity {
         this.name = name;
     }
 
+    @Column(name = "contact_person")
     public String getContactPerson() {
         return contactPerson;
     }
@@ -34,6 +49,7 @@ public class CustomersDao extends PersistentEntity {
         this.contactPerson = contactPerson;
     }
 
+    @Column(name = "phone")
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -42,26 +58,60 @@ public class CustomersDao extends PersistentEntity {
         this.phoneNumber = phoneNumber;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CustomersDao customersDao)) return false;
-        if (!super.equals(o)) return false;
-        return name.equals(customersDao.name) && contactPerson.equals(customersDao.contactPerson) && phoneNumber.equals(customersDao.phoneNumber);
+    @OneToMany(mappedBy = "customers")
+    public Set<ProjectsDao> getProjects() {
+        return projects;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), name, contactPerson, phoneNumber);
+    public void setProjects(Set<ProjectsDao> projects) {
+        this.projects = projects;
     }
+
+    public CustomersDao(int id, String name, String contactPerson, String phoneNumber, Set<ProjectsDao> projects) {
+        this.id = id;
+        this.name = name;
+        this.contactPerson = contactPerson;
+        this.phoneNumber = phoneNumber;
+        this.projects = projects;
+    }
+
+    public CustomersDao() {
+    }
+
+    public CustomersDao(int id, String name, String contactPerson, String phoneNumber) {
+        this.id = id;
+        this.name = name;
+        this.contactPerson = contactPerson;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public CustomersDao(String name, String contactPerson, String phoneNumber) {
+        this.name = name;
+        this.contactPerson = contactPerson;
+        this.phoneNumber = phoneNumber;
+    }
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        CustomersDao that = (CustomersDao) o;
+//        return id == that.id && name.equals(that.name) && contactPerson.equals(that.contactPerson) && phoneNumber.equals(that.phoneNumber) && Objects.equals(projects, that.projects);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(id, name, contactPerson, phoneNumber);
+//    }
 
     @Override
     public String toString() {
         return "CustomersDao{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", contactPerson='" + contactPerson + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", id=" + id +
+                ", projects=" + projects +
                 '}';
     }
 }

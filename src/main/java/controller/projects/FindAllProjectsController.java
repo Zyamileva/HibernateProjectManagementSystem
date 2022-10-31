@@ -1,12 +1,11 @@
 package controller.projects;
 
-import config.DataBaseManagerConnector;
+import config.HibernateProvider;
 import model.dto.ProjectsDto;
 import repository.ProjectsRepository;
 import service.ProjectsService;
 import service.ProjectsServiceImpl;
-import service.converter.DeveloperConverter;
-import service.converter.ProjectsConverter;
+import service.converter.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
 import java.util.Set;
 
 @WebServlet(urlPatterns = "/projects/allProjects")
@@ -23,10 +21,13 @@ public class FindAllProjectsController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        Connection connector = DataBaseManagerConnector.getInstance().getConnector();
-        DeveloperConverter developerConverter = new DeveloperConverter();
-        ProjectsConverter projectsConverter = new ProjectsConverter();
-        ProjectsRepository projectsRepository = new ProjectsRepository(connector);
+        HibernateProvider dbProvider = new HibernateProvider();
+        SkillsConverter skillsConverter = new SkillsConverter();
+        CompaniesConverter companiesConverter = new CompaniesConverter(skillsConverter);
+        CustomersConverter customersConverter = new CustomersConverter(skillsConverter);
+        DeveloperConverter developerConverter = new DeveloperConverter(skillsConverter, companiesConverter, customersConverter);
+        ProjectsConverter projectsConverter = new ProjectsConverter(companiesConverter, customersConverter, developerConverter);
+        ProjectsRepository projectsRepository = new ProjectsRepository(dbProvider);
         projectsService = new ProjectsServiceImpl(projectsRepository, developerConverter, projectsConverter);
     }
 

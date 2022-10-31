@@ -1,10 +1,12 @@
 package controller.skills;
 
-import config.DataBaseManagerConnector;
+import config.HibernateProvider;
 import model.dto.SkillsDto;
 import repository.DevelopersRepository;
 import repository.SkillsRepository;
 import service.*;
+import service.converter.CompaniesConverter;
+import service.converter.CustomersConverter;
 import service.converter.DeveloperConverter;
 import service.converter.SkillsConverter;
 
@@ -24,12 +26,14 @@ public class DeleteSkillController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        Connection connector = DataBaseManagerConnector.getInstance().getConnector();
+        HibernateProvider dbProvider = new HibernateProvider();
         SkillsConverter skillsConverter = new SkillsConverter();
-        SkillsRepository skillsRepository = new SkillsRepository(connector);
+        CompaniesConverter companiesConverter = new CompaniesConverter(skillsConverter);
+        CustomersConverter customersConverter = new CustomersConverter(skillsConverter);
+        SkillsRepository skillsRepository = new SkillsRepository(dbProvider);
         skillsService = new SkillsServiceImpl(skillsRepository, skillsConverter);
-        DeveloperConverter developerConverter = new DeveloperConverter();
-        DevelopersRepository developersRepository = new DevelopersRepository(connector);
+        DeveloperConverter developerConverter = new DeveloperConverter(skillsConverter, companiesConverter, customersConverter);
+        DevelopersRepository developersRepository = new DevelopersRepository(dbProvider);
         developerService = new DeveloperServiceImpl(developersRepository, developerConverter);
     }
 
