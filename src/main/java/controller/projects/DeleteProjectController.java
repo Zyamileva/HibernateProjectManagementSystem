@@ -25,8 +25,8 @@ public class DeleteProjectController extends HttpServlet {
         SkillsConverter skillsConverter = new SkillsConverter();
         CompaniesConverter companiesConverter = new CompaniesConverter(skillsConverter);
         CustomersConverter customersConverter = new CustomersConverter(skillsConverter);
-        DeveloperConverter developerConverter = new DeveloperConverter(skillsConverter, companiesConverter, customersConverter);
-        ProjectsConverter projectsConverter = new ProjectsConverter(companiesConverter, customersConverter, developerConverter);
+        DeveloperConverter developerConverter = new DeveloperConverter(skillsConverter);
+        ProjectsConverter projectsConverter = new ProjectsConverter(companiesConverter, customersConverter);
         ProjectsRepository projectsRepository = new ProjectsRepository(dbProvider);
         projectsService = new ProjectsServiceImpl(projectsRepository, developerConverter, projectsConverter);
     }

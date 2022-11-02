@@ -17,11 +17,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.List;
 
-@WebServlet(urlPatterns = "/projects/delete/developer/form")
-public class DeleteDeveloperProjectFormController extends HttpServlet {
+@WebServlet(urlPatterns = "/projects/delete/developer")
+public class DeleteDeveloperProject extends HttpServlet {
     private DeveloperService developerService;
     private ProjectsService projectsService;
 
@@ -41,18 +41,22 @@ public class DeleteDeveloperProjectFormController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("projects"));
-        Set<DevelopersDto> developers = developerService.findDevelopersOfProject(id).stream()
-                .map(el -> developerService.findById(el).get()).collect(Collectors.toSet());
-        req.setAttribute("project", projectsService.findById(id).get().getName());
-        req.setAttribute("developers", developers);
-        req.getRequestDispatcher("/WEB-INF/jsp/project/deleteProjectDeveloper.jsp").forward(req, resp);
+        String nameProject = req.getParameter("project");
+        String[] idsDeveloper = req.getParameterValues("developerId");
+        int idProject = projectsService.findByName(nameProject).get().getId();
+
+        List<Integer> ids = Arrays.stream(idsDeveloper)
+                .map(Integer::parseInt).toList();
+        try {
+            for (int id : ids) {
+                projectsService.deleteOfIdsDeveloperOfProject(id, idProject);
+            }
+        } catch (Exception ex) {
+            req.setAttribute("message", "Error delete. Developer does not exist.");
+            req.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(req, resp);
+        }
+        req.setAttribute("message", "Developers delete");
+        req.getRequestDispatcher("/WEB-INF/jsp/project/deleteProjectDeveloperForm.jsp").forward(req, resp);
     }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Set<ProjectsDto> allProjects = projectsService.findAll();
-        req.setAttribute("projects", allProjects);
-        req.getRequestDispatcher("/WEB-INF/jsp/project/deleteProjectDeveloperFormSearch.jsp").forward(req, resp);
-    }
 }

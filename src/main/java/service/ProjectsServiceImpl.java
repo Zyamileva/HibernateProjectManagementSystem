@@ -7,7 +7,6 @@ import model.dto.ProjectsDto;
 import repository.ProjectsRepository;
 import service.converter.Converter;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -47,8 +46,8 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     @Override
-    public void deleteOfIdsProject(int projectId) {
-        projectsRepository.deleteOfIdsProject(projectId);
+    public void deleteOfIdsDeveloperOfProject(int developerId, int projectId) {
+        projectsRepository.deleteOfIdsDeveloperOfProject(developerId, projectId);
     }
 
     @Override
@@ -57,8 +56,8 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     @Override
-    public void deleteOfIdsDeveloperOfProject(int developerId, int projectsId) {
-        projectsRepository.deleteOfIdsDeveloperOfProject(developerId, projectsId);
+    public void deleteOfIdsProject(int projectId) {
+        projectsRepository.deleteOfIdsProject(projectId);
     }
 
     @Override
@@ -67,29 +66,8 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     @Override
-    public int salaryOfProjects(int id) {
-        return projectsRepository.sallaryOfProjects(id);
-    }
-
-    @Override
-    public List<DevelopersDto> ListDevelopersOfProjects(int id) {
-        return projectsRepository.ListDevelopersOfProjects(id).stream().map(element -> converterDeveloper.from(element))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public int CountDevelopersOfProjects(int id) {
-        return projectsRepository.CountDevelopersOfProjects(id);
-    }
-
-    @Override
     public void saveDevelopers(int idDeveloper, int idProject) {
         projectsRepository.saveDeveloper(idDeveloper, idProject);
-    }
-
-    @Override
-    public boolean findByIdDeveloperIdProjects(int idDeveloper, int idProject) {
-        return projectsRepository.findByIdDeveloperIdProjects(idDeveloper, idProject);
     }
 
     @Override

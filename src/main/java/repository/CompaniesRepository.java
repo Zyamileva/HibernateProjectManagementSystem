@@ -54,7 +54,7 @@ public class CompaniesRepository implements Repository<CompaniesDao> {
     public Optional<CompaniesDao> findById(int id) {
         try (Session session = manager.openSession()) {
             return Optional.ofNullable(session.createQuery("FROM CompaniesDao as companies WHERE companies.id = :id",
-                            CompaniesDao.class).setParameter("id", id).getSingleResult());
+                    CompaniesDao.class).setParameter("id", id).getSingleResult());
         } catch (Exception e) {
             e.printStackTrace();
         }

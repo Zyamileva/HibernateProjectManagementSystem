@@ -39,20 +39,14 @@ public class SkillsRepository implements Repository<SkillsDao> {
     }
 
     public Set<SkillsDao> findByNameSet(String name) {
-//        final String FIND_BY_NAME = "SELECT * FROM skills WHERE name = ?";
-//        Set<SkillsDao> skills = new HashSet<>();
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME);
-//            preparedStatement.setString(1, name);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                skills.add(skillsMapper.map(resultSet));
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return skills;
-        return null;
+        try (Session session = manager.openSession()) {
+            return session.createQuery("FROM SkillsDao as skills WHERE skills.name = :name",
+                            SkillsDao.class)
+                    .setParameter("name", name).stream().collect(Collectors.toSet());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptySet();
     }
 
     @Override
@@ -60,7 +54,7 @@ public class SkillsRepository implements Repository<SkillsDao> {
         try (Session session = manager.openSession()) {
             return Optional.ofNullable(session.createQuery("FROM SkillsDao as skills WHERE skills.name = :name",
                             SkillsDao.class)
-                    .setParameter("name", name).getSingleResult());
+                    .setParameter("name", name).stream().findFirst().get());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,40 +72,37 @@ public class SkillsRepository implements Repository<SkillsDao> {
         }
         return Optional.empty();
     }
-        @Override
-        public Set<SkillsDao> findAll () {
-            try (final Session session = manager.openSession()) {
-                return session.createQuery("FROM SkillsDao as skills", SkillsDao.class)
-                        .stream().collect(Collectors.toSet());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return Collections.emptySet();
-        }
-        @Override
-        public void update (SkillsDao entity){
-            try (Session session = manager.openSession()) {
-                Transaction transaction = session.beginTransaction();
-                session.update(entity);
-                transaction.commit();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
 
-        public int findByNameLevel (String name, String level){
-//        final String EXIST = "SELECT id FROM skills WHERE name = ? AND level = ? ";
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(EXIST);
-//            preparedStatement.setString(1, name);
-//            preparedStatement.setString(2, level);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            if (resultSet.next()) {
-//                return resultSet.getInt("id");
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-            return 0;
+    @Override
+    public Set<SkillsDao> findAll() {
+        try (final Session session = manager.openSession()) {
+            return session.createQuery("FROM SkillsDao as skills", SkillsDao.class)
+                    .stream().collect(Collectors.toSet());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptySet();
+    }
+
+    @Override
+    public void update(SkillsDao entity) {
+        try (Session session = manager.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.update(entity);
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
+    public Optional<SkillsDao> findByNameLevel(String name, String level) {
+        try (Session session = manager.openSession()) {
+            return Optional.ofNullable(session.createQuery("FROM SkillsDao as skills WHERE skills.name = :name " +
+                            "AND skills.level = :level", SkillsDao.class)
+                    .setParameter("name", name).setParameter("level", level).getSingleResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+}

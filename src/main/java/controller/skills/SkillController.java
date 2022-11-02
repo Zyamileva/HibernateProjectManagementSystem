@@ -44,6 +44,8 @@ public class SkillController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("skillName");
         String level = req.getParameter("level");
+
+
         SkillsDto skillsDto = new SkillsDto(name, level);
         skillsService.saveSkill(skillsDto);
         req.getRequestDispatcher("/WEB-INF/jsp/skill/savedSkill.jsp").forward(req, resp);

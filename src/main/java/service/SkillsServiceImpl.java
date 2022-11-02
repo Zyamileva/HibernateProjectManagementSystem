@@ -49,7 +49,7 @@ public class SkillsServiceImpl implements SkillsService {
     }
 
     @Override
-    public int findByNameLevel(String name, String level) {
+    public Optional<SkillsDao> findByNameLevel(String name, String level) {
         return skillsRepository.findByNameLevel(name, level);
     }
 

@@ -21,7 +21,7 @@ public class CompanyController extends HttpServlet {
     @Override
     public void init() throws ServletException {
         HibernateProvider dbProvider = new HibernateProvider();
-        SkillsConverter skillConverter=new SkillsConverter();
+        SkillsConverter skillConverter = new SkillsConverter();
         CompaniesConverter companiesConverter = new CompaniesConverter(skillConverter);
         CompaniesRepository companiesRepository = new CompaniesRepository(dbProvider);
         companiesService = new CompaniesServiceImpl(companiesRepository, companiesConverter);
@@ -42,9 +42,14 @@ public class CompanyController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String companyName = req.getParameter("companyName");
-        int staff = Integer.parseInt(req.getParameter("staff"));
-        CompaniesDto companiesDto = new CompaniesDto(companyName, staff);
-        companiesService.saveCompanies(companiesDto);
-        req.getRequestDispatcher("/WEB-INF/jsp/company/savedCompany.jsp").forward(req, resp);
+        if (companiesService.findByName(companyName).isPresent()) {
+            req.setAttribute("message", "The company already exists");
+            req.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(req, resp);
+        } else {
+            int staff = Integer.parseInt(req.getParameter("staff"));
+            CompaniesDto companiesDto = new CompaniesDto(companyName, staff);
+            companiesService.saveCompanies(companiesDto);
+            req.getRequestDispatcher("/WEB-INF/jsp/company/savedCompany.jsp").forward(req, resp);
+        }
     }
 }

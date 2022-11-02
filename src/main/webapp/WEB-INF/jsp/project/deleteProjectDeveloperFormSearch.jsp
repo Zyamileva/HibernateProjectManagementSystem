@@ -17,13 +17,8 @@
             <option style="text-align: center; width:250px; margin: 15px" ;
                     value="${project.id}">${project.name}</option>
         </c:forEach>
-    </select><br>
-    <label style="margin: 15px"> Search developer for delete: </label><br>
-    <c:forEach items="${developers}" var="developer">
-        <input type="checkbox" style="text-align: center; width:250px; margin: 15px" ; name="developerId"
-               value="${developer.id}">${developer.firstName} ${developer.lastName}</input><br/>
-    </c:forEach><br>
-    <button style="margin: 15px" ; type="submit">Delete developers</button>
+    </select>
+    <button style="margin: 15px" ; type="submit">Search project</button>
 </form>
 </body>
 </html>

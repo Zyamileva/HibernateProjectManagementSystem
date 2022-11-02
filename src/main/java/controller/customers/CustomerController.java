@@ -42,10 +42,15 @@ public class CustomerController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String customerName = req.getParameter("customerName");
-        String contactPerson = req.getParameter("contactPerson");
-        String phone = req.getParameter("phone");
-        CustomersDto customersDto = new CustomersDto(customerName, contactPerson, phone);
-        customersService.saveCustomer(customersDto);
-        req.getRequestDispatcher("/WEB-INF/jsp/customer/savedCustomer.jsp").forward(req, resp);
+        if (customersService.findByName(customerName).isPresent()) {
+            req.setAttribute("message", "The customer already exists");
+            req.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(req, resp);
+        } else {
+            String contactPerson = req.getParameter("contactPerson");
+            String phone = req.getParameter("phone");
+            CustomersDto customersDto = new CustomersDto(customerName, contactPerson, phone);
+            customersService.saveCustomer(customersDto);
+            req.getRequestDispatcher("/WEB-INF/jsp/customer/savedCustomer.jsp").forward(req, resp);
+        }
     }
 }

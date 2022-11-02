@@ -1,22 +1,15 @@
 package service.converter;
 
-import model.dao.DevelopersDao;
 import model.dao.ProjectsDao;
-import model.dto.DevelopersDto;
 import model.dto.ProjectsDto;
-
-import java.util.stream.Collectors;
 
 public class ProjectsConverter implements Converter<ProjectsDto, ProjectsDao> {
     CompaniesConverter companiesConverter;
     CustomersConverter customersConverter;
-    DeveloperConverter developerConverter;
 
-    public ProjectsConverter(CompaniesConverter companiesConverter, CustomersConverter customersConverter,
-                             DeveloperConverter developerConverter) {
+    public ProjectsConverter(CompaniesConverter companiesConverter, CustomersConverter customersConverter) {
         this.companiesConverter = companiesConverter;
         this.customersConverter = customersConverter;
-        this.developerConverter = developerConverter;
     }
 
     @Override

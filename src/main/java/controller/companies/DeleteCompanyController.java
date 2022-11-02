@@ -17,9 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @WebServlet(urlPatterns = "/companies/delete")
 public class DeleteCompanyController extends HttpServlet {
@@ -32,8 +29,8 @@ public class DeleteCompanyController extends HttpServlet {
         SkillsConverter skillsConverter=new SkillsConverter();
         CompaniesConverter companiesConverter = new CompaniesConverter(skillsConverter);
         CustomersConverter customersConverter = new CustomersConverter(skillsConverter);
-        DeveloperConverter developerConverter = new DeveloperConverter(skillsConverter,companiesConverter,customersConverter);
-        ProjectsConverter projectsConverter = new ProjectsConverter(companiesConverter,customersConverter,developerConverter);
+        DeveloperConverter developerConverter = new DeveloperConverter(skillsConverter);
+        ProjectsConverter projectsConverter = new ProjectsConverter(companiesConverter,customersConverter);
         CompaniesRepository companiesRepository = new CompaniesRepository(dbProvider);
         companiesService = new CompaniesServiceImpl(companiesRepository, companiesConverter);
         ProjectsRepository projectsRepository = new ProjectsRepository(dbProvider);
@@ -44,14 +41,7 @@ public class DeleteCompanyController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String companyName = req.getParameter("companyName");
         if (companiesService.findByName(companyName).isPresent()) {
-//            Set<ProjectsDto> projectsDtos = projectsService.findAll().stream()
-//                    .filter(el -> companiesService.findById(el.getCompanies().getId()).get().getName().equals(companyName)).collect(Collectors.toSet());
-//            for (ProjectsDto element : projectsDtos) {
-//                projectsService.deleteOfIdsProject(element.getId());
-//                projectsService.delete(element);
-//            }
             CompaniesDto company = companiesService.findByName(companyName).get();
-
             for(ProjectsDto element: company.getProjects()) {
                 projectsService.delete(element);
             }

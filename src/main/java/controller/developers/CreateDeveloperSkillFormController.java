@@ -1,6 +1,5 @@
 package controller.developers;
 
-
 import config.HibernateProvider;
 import model.dto.DevelopersDto;
 import model.dto.SkillsDto;
@@ -10,8 +9,6 @@ import service.DeveloperService;
 import service.DeveloperServiceImpl;
 import service.SkillsService;
 import service.SkillsServiceImpl;
-import service.converter.CompaniesConverter;
-import service.converter.CustomersConverter;
 import service.converter.DeveloperConverter;
 import service.converter.SkillsConverter;
 
@@ -32,9 +29,7 @@ public class CreateDeveloperSkillFormController extends HttpServlet {
     public void init() throws ServletException {
         HibernateProvider dbProvider = new HibernateProvider();
         SkillsConverter skillsConverter = new SkillsConverter();
-        CompaniesConverter companiesConverter = new CompaniesConverter(skillsConverter);
-        CustomersConverter customersConverter = new CustomersConverter(skillsConverter);
-        DeveloperConverter developerConverter = new DeveloperConverter(skillsConverter, companiesConverter, customersConverter);
+        DeveloperConverter developerConverter = new DeveloperConverter(skillsConverter);
         DevelopersRepository developersRepository = new DevelopersRepository(dbProvider);
         developerService = new DeveloperServiceImpl(developersRepository, developerConverter);
         SkillsRepository skillsRepository = new SkillsRepository(dbProvider);

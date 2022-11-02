@@ -30,4 +30,11 @@ public class SkillsDto {
     public int hashCode() {
         return Objects.hash(id, name, level);
     }
+
+    @Override
+    public String toString() {
+        return "name='" + name + '\'' +
+                ", level='" + level + '\'' +
+                '}';
+    }
 }

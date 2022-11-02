@@ -18,7 +18,7 @@
     <label style="margin: 15px"; for="taskDifficulty"> Task difficulty: </label><br>
     <input style="border: 2px solid #39c; margin: 15px"; type="text" id="taskDifficulty" name="taskDifficulty"><br>
     <label style="margin: 15px"; for="Cost"> Cost: </label><br>
-    <input style="border: 2px solid #39c; margin: 15px"; type="text" id="Cost" name="Cost"><br>
+    <input style="border: 2px solid #39c; margin: 15px"; type="number" id="Cost" name="Cost"><br>
 
     <label style="margin: 15px"> Search company: </label><br>
     <select  style="text-align: center; width:250px; font-weight: bold; margin: 15px"; name="newCompany">

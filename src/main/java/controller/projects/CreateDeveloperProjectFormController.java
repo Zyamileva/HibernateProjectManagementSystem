@@ -29,10 +29,10 @@ public class CreateDeveloperProjectFormController extends HttpServlet {
         SkillsConverter skillsConverter = new SkillsConverter();
         CompaniesConverter companiesConverter = new CompaniesConverter(skillsConverter);
         CustomersConverter customersConverter = new CustomersConverter(skillsConverter);
-        DeveloperConverter developerConverter = new DeveloperConverter(skillsConverter, companiesConverter, customersConverter);
+        DeveloperConverter developerConverter = new DeveloperConverter(skillsConverter);
         DevelopersRepository developersRepository = new DevelopersRepository(dbProvider);
         developerService = new DeveloperServiceImpl(developersRepository, developerConverter);
-        ProjectsConverter projectsConverter = new ProjectsConverter(companiesConverter, customersConverter, developerConverter);
+        ProjectsConverter projectsConverter = new ProjectsConverter(companiesConverter, customersConverter);
         ProjectsRepository projectsRepository = new ProjectsRepository(dbProvider);
         projectsService = new ProjectsServiceImpl(projectsRepository, developerConverter, projectsConverter);
     }

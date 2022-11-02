@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = "/customers/delete")
 public class DeleteCustomerController extends HttpServlet {
@@ -28,8 +28,8 @@ public class DeleteCustomerController extends HttpServlet {
         SkillsConverter skillsConverter = new SkillsConverter();
         CompaniesConverter companiesConverter = new CompaniesConverter(skillsConverter);
         CustomersConverter customersConverter = new CustomersConverter(skillsConverter);
-        DeveloperConverter developerConverter = new DeveloperConverter(skillsConverter, companiesConverter, customersConverter);
-        ProjectsConverter projctsConverter = new ProjectsConverter(companiesConverter, customersConverter, developerConverter);
+        DeveloperConverter developerConverter = new DeveloperConverter(skillsConverter);
+        ProjectsConverter projctsConverter = new ProjectsConverter(companiesConverter, customersConverter);
         CustomersRepository customersRepository = new CustomersRepository(dbProvider);
         customersService = new CustomersServiceImpl(customersRepository, customersConverter);
         ProjectsRepository projectsRepository = new ProjectsRepository(dbProvider);
@@ -39,17 +39,15 @@ public class DeleteCustomerController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String customerName = req.getParameter("customerName");
-        if (customersService.findByName(customerName).isPresent()) {
-            Set<ProjectsDto> projectsDtos = projectsService.findAll().stream()
-                    .filter(el -> customersService.findById(el.getCustomers().getId())
-                            .get().getName().equals(customerName)).collect(Collectors.toSet());
-            for (ProjectsDto element : projectsDtos) {
+        Optional<CustomersDto> byName = customersService.findByName(customerName);
+        if (byName.isPresent()) {
+            Set<ProjectsDto> projects = byName.get().getProjects();
+            for (ProjectsDto element : projects) {
                 projectsService.deleteOfIdsProject(element.getId());
                 projectsService.delete(element);
             }
-            CustomersDto customer = customersService.findByName(customerName).get();
-            customersService.delete(customer);
-            req.setAttribute("message", "Customer: \"" + customer.getName() + "\" deleted");
+            customersService.delete(byName.get());
+            req.setAttribute("message", "Customer: \"" + customerName + "\" deleted");
         } else {
             req.setAttribute("message", "Customer not found");
         }

@@ -5,7 +5,6 @@ import model.dto.DevelopersDto;
 import repository.DevelopersRepository;
 import service.converter.Converter;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,13 +34,7 @@ public class DeveloperServiceImpl implements DeveloperService {
     }
 
     @Override
-    public List<Integer> listSkillsOfDevelopers(int idDeveloper) {
-        return developersRepository.listSkillsOfDevelopers(idDeveloper);
-    }
-
-    @Override
     public Set<DevelopersDto> findAll() {
-        Set<DevelopersDao> all = developersRepository.findAll();
         return developersRepository.findAll().stream().map((element) -> converter.from(element))
                 .collect(Collectors.toSet());
     }
@@ -52,25 +45,8 @@ public class DeveloperServiceImpl implements DeveloperService {
     }
 
     @Override
-    public void deleteSkillsOfDeveloper(int idDeveloper) {
-        developersRepository.deleteSkillsOfDeveloper(idDeveloper);
-    }
-
-    @Override
     public void deleteDevelopersOfIdsSkill(int idSkill) {
         developersRepository.deleteDeveloperOfIdsSkill(idSkill);
-    }
-
-    @Override
-    public List<DevelopersDto> listOfSkillNameDevelopers(String skillName) {
-        return developersRepository.listOfSkillNameDevelopers(skillName).stream().map((element) -> converter.from(element))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<DevelopersDto> listOfSkillLevelDevelopers(String skillLevel) {
-        return developersRepository.listOfSkillLevelDevelopers(skillLevel).stream().map((element) -> converter.from(element))
-                .collect(Collectors.toList());
     }
 
     @Override
@@ -81,5 +57,16 @@ public class DeveloperServiceImpl implements DeveloperService {
     @Override
     public void update(DevelopersDto developer) {
         developersRepository.update(converter.to(developer));
+    }
+
+    public Set<Integer> findDevelopersOfProject(int idProject) {
+        return developersRepository.findDevelopersOfProject(idProject);
+    }
+
+    @Override
+    public Set<DevelopersDto> findByNameSet(String name) {
+        return developersRepository.findByNameSet(name).stream()
+                .map((element) -> converter.from(element))
+                .collect(Collectors.toSet());
     }
 }

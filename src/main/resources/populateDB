@@ -6,6 +6,7 @@ create table developers
 	last_name VARCHAR(25) NOT NULL,
 	email VARCHAR(25) NOT NULL,
 	phone_number VARCHAR(20),
+	salary INT,
   UNIQUE (email),
   UNIQUE (phone_number)
 );
@@ -54,6 +55,8 @@ create table projects
     task_difficulty VARCHAR(20),
     company_id INT,
     customer_id INT,
+	cost INT,
+	date_create timestamp,
   FOREIGN KEY (company_id)
   REFERENCES companies,
   FOREIGN KEY (customer_id)
@@ -72,30 +75,22 @@ create table developers_projects
    project_id int
    constraint developers_projects_project_id_fk
    references projects,
-   UNIQUE(developer_id,project_id)
+   constraint pk_developers_projects
+   primary key (developer_id,project_id)
  );
 
 alter table developers_projects owner to postgres;
 
 create table developers_skills
  (
-   id SERIAL,
    developer_id int
    constraint developers_skills_developer_id_fk
    references developers,
    skill_id int
    constraint developers_skills_skill_id_fk
    references skills,
-   UNIQUE(developer_id,skill_id)
+   constraint pk_developers_skills
+   primary key (developer_id,skill_id)
  );
 
 alter table developers_skills owner to postgres;
-
-alter table developers
-add salary INT;
-
-alter table projects
-add cost INT;
-
-alter table projects
-add date_create timestamp;

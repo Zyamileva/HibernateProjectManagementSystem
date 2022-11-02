@@ -17,72 +17,6 @@ public class ProjectsRepository implements Repository<ProjectsDao> {
         this.manager = manager;
     }
 
-    public int sallaryOfProjects(int id) {
-//        final String query = """
-//                select SUM(salary) as all_sallary, pr.name as name
-//                from projects as pr
-//                join developers_projects as dp on pr.id=dp.project_id
-//                join developers as d on dp.developer_id=d.id
-//                where pr.id=?
-//                group by name
-//                """;
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(query);
-//            preparedStatement.setInt(1, id);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            if (resultSet.next()) {
-//                return resultSet.getInt(1);
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-        return 0;
-    }
-
-    public List<DevelopersDao> ListDevelopersOfProjects(int id) {
-//        final String query = """
-//                select d.*
-//                from projects as pr
-//                join developers_projects as dp on pr.id=dp.project_id
-//                join developers as d on dp.developer_id=d.id
-//                where pr.id=?
-//                """;
-//        List<DevelopersDao> developers = new ArrayList<>();
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(query);
-//            preparedStatement.setInt(1, id);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                developers.add(developersMapper.map(resultSet));
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return developers;
-        return null;
-    }
-
-    public int CountDevelopersOfProjects(int id) {
-//        final String query = """
-//                select count(d.id)
-//                from projects as pr
-//                join developers_projects as dp on pr.id=dp.project_id
-//                join developers as d on dp.developer_id=d.id
-//                where pr.id=?
-//                """;
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(query);
-//            preparedStatement.setInt(1, id);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                return resultSet.getInt(1);
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-        return 0;
-    }
-
     @Override
     public ProjectsDao save(ProjectsDao entity) {
         try (Session session = manager.openSession()) {
@@ -116,22 +50,6 @@ public class ProjectsRepository implements Repository<ProjectsDao> {
             e.printStackTrace();
         }
         return Optional.empty();
-    }
-
-    public boolean findByIdDeveloperIdProjects(int idDeveloper, int idProject) {
-//        final String FIND_BY_ID = "SELECT * FROM developers_projects WHERE developer_id = ? and project_id = ?";
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
-//            preparedStatement.setInt(1, idDeveloper);
-//            preparedStatement.setInt(2, idProject);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            if (resultSet.next()) {
-//                return true;
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-        return false;
     }
 
     @Override
@@ -168,35 +86,6 @@ public class ProjectsRepository implements Repository<ProjectsDao> {
         }
     }
 
-    public void deleteProjectOfIdsDeveloper(int developerId) {
-//        final String query = """
-//                delete from developers_projects
-//                where developer_id = ?
-//                """;
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(query);
-//            preparedStatement.setInt(1, developerId);
-//            preparedStatement.execute();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-    }
-
-    public void deleteOfIdsDeveloperOfProject(int developerId, int projectId) {
-//        final String query = """
-//                delete from developers_projects
-//                where developer_id = ? and project_id = ?
-//                """;
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(query);
-//            preparedStatement.setInt(1, developerId);
-//            preparedStatement.setInt(2, projectId);
-//            preparedStatement.execute();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-    }
-
     @Override
     public void update(ProjectsDao entity) {
         try (Session session = manager.openSession()) {
@@ -209,15 +98,35 @@ public class ProjectsRepository implements Repository<ProjectsDao> {
     }
 
     public void saveDeveloper(int idDeveloper, int idProject) {
-//        final String INSERT = "INSERT INTO developers_projects(developer_id, project_id)" +
-//                " VALUES(?,?)";
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
-//            preparedStatement.setInt(1, idDeveloper);
-//            preparedStatement.setInt(2, idProject);
-//            preparedStatement.execute();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
+        try (Session session = manager.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.createNativeQuery("insert into developers_projects (developer_id, project_id) values (?1,?2) ")
+                    .setParameter(1, idDeveloper).setParameter(2, idProject).executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteProjectOfIdsDeveloper(int developerId) {
+        try (Session session = manager.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.createNativeQuery("delete from developers_projects where developer_id = ?1")
+                    .setParameter(1, developerId).executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteOfIdsDeveloperOfProject(int developerId, int projectId) {
+        try (Session session = manager.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.createNativeQuery("delete from developers_projects where developer_id = ?1 and project_id = ?2")
+                    .setParameter(1, developerId).setParameter(2, projectId).executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

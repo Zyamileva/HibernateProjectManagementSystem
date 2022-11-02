@@ -5,8 +5,6 @@ import model.dto.DevelopersDto;
 import repository.DevelopersRepository;
 import service.DeveloperService;
 import service.DeveloperServiceImpl;
-import service.converter.CompaniesConverter;
-import service.converter.CustomersConverter;
 import service.converter.DeveloperConverter;
 import service.converter.SkillsConverter;
 
@@ -26,9 +24,7 @@ public class FindAllDeveloperController extends HttpServlet {
     public void init() throws ServletException {
         HibernateProvider dbProvider = new HibernateProvider();
         SkillsConverter skillsConverter = new SkillsConverter();
-        CompaniesConverter companiesConverter = new CompaniesConverter(skillsConverter);
-        CustomersConverter customersConverter = new CustomersConverter(skillsConverter);
-        DeveloperConverter developerConverter = new DeveloperConverter(skillsConverter, companiesConverter, customersConverter);
+        DeveloperConverter developerConverter = new DeveloperConverter(skillsConverter);
         DevelopersRepository developersRepository = new DevelopersRepository(dbProvider);
         developerService = new DeveloperServiceImpl(developersRepository, developerConverter);
     }

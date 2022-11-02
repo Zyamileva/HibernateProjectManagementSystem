@@ -5,19 +5,13 @@ import model.dao.ProjectsDao;
 import model.dto.DevelopersDto;
 import model.dto.ProjectsDto;
 
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DeveloperConverter implements Converter<DevelopersDto, DevelopersDao> {
     SkillsConverter skillsConverter;
-    CompaniesConverter companiesConverter;
-    CustomersConverter customersConverter;
 
-    public DeveloperConverter(SkillsConverter skillsConverter,
-                              CompaniesConverter companiesConverter, CustomersConverter customersConverter) {
+    public DeveloperConverter(SkillsConverter skillsConverter) {
         this.skillsConverter = skillsConverter;
-        this.companiesConverter = companiesConverter;
-        this.customersConverter = customersConverter;
     }
 
     @Override
@@ -59,12 +53,6 @@ public class DeveloperConverter implements Converter<DevelopersDto, DevelopersDa
         projectsDto.setDatePosted(entity.getDatePosted());
         projectsDto.setTask_difficulty(entity.getTask_difficulty());
         projectsDto.setCost(entity.getCost());
-//        projectsDto.setCompanies(this.from(entity.getCompanies()));
-//        projectsDto.setCustomers(this.customersFrom(entity.getCustomers()));
-//        if (entity.getDevelopers() != null) {
-//            projectsDto.setDevelopers(entity.getDevelopers().stream().map(this::developersFrom)
-//                    .collect(Collectors.toSet()));
-//        }
         return projectsDto;
     }
 
@@ -75,13 +63,6 @@ public class DeveloperConverter implements Converter<DevelopersDto, DevelopersDa
         projectsDao.setName(entity.getName());
         projectsDao.setTask_difficulty(entity.getTask_difficulty());
         projectsDao.setCost(entity.getCost());
-//        projectsDao.setCompanies(this.to(entity.getCompanies()));
-//        projectsDao.setCustomers(this.customersTo(entity.getCustomers()));
-//        if (entity.getDevelopers() != null) {
-//            projectsDao.setDevelopers(entity.getDevelopers().stream().map(this::developersTo)
-//                    .collect(Collectors.toSet()));
-//        }
         return projectsDao;
     }
-
 }

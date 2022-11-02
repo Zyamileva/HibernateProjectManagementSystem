@@ -25,6 +25,7 @@
             <td style="text-align: center; width:200px; font-weight: bold; margin: 15px">email:</td>
             <td style="text-align: center; width:200px; font-weight: bold; margin: 15px">Phone number:</td>
             <td style="text-align: center; width:100px; font-weight: bold; margin: 15px">Salary:</td>
+            <td style="text-align: center; width:100px; font-weight: bold; margin: 15px">Skills:</td>
         </tr>
     </c:if>
     <c:if test="${empty developers}">
@@ -32,6 +33,7 @@
     </c:if>
     </thead>
     <tbody>
+    <c:forEach var="developers" items="${developers}">
         <tr>
             <td style="text-align: center; width:250px;">
                 <c:out value="${developers.firstName}"/>
@@ -48,30 +50,8 @@
             <td style="text-align: center; width:100px;">
                 <c:out value="${developers.salary}"/>
             </td>
-        </tr>
-    </tbody>
-</table>
-<br>
-<table table-layout:fixed; width:100%;>
-    <thead>
-    <c:if test="${not empty skills}">
-        <tr>
-            <td style="text-align: center; width:250px; font-weight: bold; margin: 15px">Skill name:</td>
-            <td style="text-align: center; width:250px; font-weight: bold; margin: 15px">Skill level:</td>
-        </tr>
-    </c:if>
-    <c:if test="${empty developers}">
-        <p><strong style="margin: 55px">There is not developers`s skills</strong></p>
-    </c:if>
-    </thead>
-    <tbody>
-    <c:forEach var="skill" items="${skills}">
-        <tr>
-            <td style="text-align: center; width:250px;">
-                <c:out value="${skill.name}"/>
-            </td>
-            <td style="text-align: center; width:250px;">
-                <c:out value="${skill.level}"/>
+            <td style="text-align: center; width:400px;">
+                <c:out value="${developers.skills}"/>
             </td>
         </tr>
     </c:forEach>

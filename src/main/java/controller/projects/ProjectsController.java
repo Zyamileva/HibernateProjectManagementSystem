@@ -28,8 +28,8 @@ public class ProjectsController extends HttpServlet {
         SkillsConverter skillsConverter = new SkillsConverter();
         CompaniesConverter companiesConverter = new CompaniesConverter(skillsConverter);
         CustomersConverter customersConverter = new CustomersConverter(skillsConverter);
-        DeveloperConverter developerConverter = new DeveloperConverter(skillsConverter, companiesConverter, customersConverter);
-        ProjectsConverter projectsConverter = new ProjectsConverter(companiesConverter, customersConverter, developerConverter);
+        DeveloperConverter developerConverter = new DeveloperConverter(skillsConverter);
+        ProjectsConverter projectsConverter = new ProjectsConverter(companiesConverter, customersConverter);
         ProjectsRepository projectsRepository = new ProjectsRepository(dbProvider);
         projectsService = new ProjectsServiceImpl(projectsRepository, developerConverter, projectsConverter);
         CompaniesRepository companiesRepository = new CompaniesRepository(dbProvider);
@@ -53,14 +53,19 @@ public class ProjectsController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("projectName");
-        int cost = Integer.parseInt(req.getParameter("Cost"));
-        String task_difficulty = req.getParameter("taskDifficulty");
-        int customerId = Integer.parseInt(req.getParameter("customer"));
-        int companyId = Integer.parseInt(req.getParameter("company"));
-        LocalDateTime dateCreate = LocalDateTime.now();
-        ProjectsDto projectsDto = new ProjectsDto(name, dateCreate, task_difficulty, cost, companiesService.findById(companyId).get(),
-                customersService.findById(customerId).get());
-        projectsService.saveProject(projectsDto);
-        req.getRequestDispatcher("/WEB-INF/jsp/project/savedProject.jsp").forward(req, resp);
+        if (projectsService.findByName(name).isPresent()) {
+            req.setAttribute("message", "The project already exists");
+            req.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(req, resp);
+        } else {
+            int cost = Integer.parseInt(req.getParameter("Cost"));
+            String task_difficulty = req.getParameter("taskDifficulty");
+            int customerId = Integer.parseInt(req.getParameter("customer"));
+            int companyId = Integer.parseInt(req.getParameter("company"));
+            LocalDateTime dateCreate = LocalDateTime.now();
+            ProjectsDto projectsDto = new ProjectsDto(name, dateCreate, task_difficulty, cost, companiesService.findById(companyId).get(),
+                    customersService.findById(customerId).get());
+            projectsService.saveProject(projectsDto);
+            req.getRequestDispatcher("/WEB-INF/jsp/project/savedProject.jsp").forward(req, resp);
+        }
     }
 }
